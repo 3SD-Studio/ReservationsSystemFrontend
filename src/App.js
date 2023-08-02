@@ -1,38 +1,24 @@
-import './App.css';
-import React, {useEffect, useState} from 'react';
+import React from 'react'
+import { Route, Routes } from 'react-router-dom'
+// We will create these two pages in a moment
+import  {Roomlist} from "./components/Roomlist.js"
+import {BrowserRouter} from 'react-router-dom'
+import { MainPage } from './components/MainPage.js'
 
-function App() {
-  const[rooms, setRooms] = useState([])
-
-  const fetchRoomsData = () => {
-    var requestOptions = {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json'
-      },
-    }
-    
-    fetch("http://127.0.0.1:5000/rooms", requestOptions)
-    .then(response => response.json())
-    .then(response => setRooms(response))
-    .catch(error => console.log('error', error))
-  
-  }
-  
-  useEffect(() => {
-    fetchRoomsData()
-  }, [])
-
-  
+export default function App() {
   return (
-    <div className="App">
-      <ul>
-        {rooms.map((room) => {
-          return <li>{JSON.stringify(room)}</li>
-        })}
-      </ul>
-    </div>
-  );
+    <>
+      <h1 style={{textAlign: "center"}}>
+        Reservation system
+      </h1>
+      <BrowserRouter>
+        <Routes>
+          <Route exact path='/' element={<MainPage/>}/>
+          <Route exact path='rooms' element={<Roomlist/>} />
+        </Routes>
+      </BrowserRouter>
+      
+    </>
+    
+  )
 }
-
-export default App;
