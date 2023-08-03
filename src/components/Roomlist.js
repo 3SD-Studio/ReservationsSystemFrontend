@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
+import { Link } from "react-router-dom";
 
-export function Roomlist() {
+export function RoomList() {
   const[rooms, setRooms] = useState([])
 
   const fetchRoomsData = () => {
@@ -28,7 +29,7 @@ export function Roomlist() {
       <h1>Choose room from list:</h1>
       <ul aria-label="Choose room from list:">
         {rooms.map((room) => {
-          return <li><a href="">{room['name']}</a></li>
+          return <li><Link to={'/room/' + room['id']}>{room['name']}</Link></li>
         })}
       </ul>
     </div>
