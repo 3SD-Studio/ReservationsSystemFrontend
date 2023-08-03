@@ -1,8 +1,10 @@
+
 .descritpionDiv p {
     margin-top: 0px;
     margin-bottom: 0px;
     margin-left: 10px;
     margin-right: 10px;
+    
 }
 
 .descritpionDiv h4 {
@@ -15,8 +17,9 @@
     margin-left: 20px;
     border: 2px solid #e6e6e6;
     border-radius: 5px;
-    width: -moz-fit-content;
-    width: fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
+    display: inline-block;
 }
 
 .green {

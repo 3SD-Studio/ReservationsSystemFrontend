@@ -1,0 +1,50 @@
+.today {
+    color: aqua;
+}
+
+.calendarDiv {
+    width: 50%;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    border: 2px solid #f2f2f2;
+    padding: 20px;
+    margin-left: 10%;
+    margin-right: 25%;
+    margin-bottom: 20px;
+    position: static;
+    overflow: hidden;
+}
+
+.calendarHeader {
+    width: 100%;
+    text-align: center;
+    margin-top: 0px;
+    margin-bottom: 15px;
+    font-size: 32pt;
+}
+
+.calendarTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.calendarItemDiv {
+    padding: 0px;
+    display: flex;
+    border: 2px solid #f2f2f2; 
+    box-shadow: 0px 0px 10px 0px rgb(0, 0, 0, 0.3);
+    width: 50px; 
+    height: 50px; 
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 50%; 
+    text-align: center; 
+    justify-content: center;
+    font-size: 20px; 
+    line-height: 100%;
+}
+
+.calendarItemDiv a{
+    margin-top: 15px;
+}

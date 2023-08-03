@@ -16,7 +16,6 @@ export function RoomList() {
     .then(response => response.json())
     .then(response => setRooms(response))
     .catch(error => console.log('error', error))
-  
   }
   
   useEffect(() => {
