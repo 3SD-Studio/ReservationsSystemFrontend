@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { Calendar } from "./Calendar";
 
 import './RoomPage.css'
+import './UpcomingEvents.css'
 
 const symbol = (bool) => {
     if (bool) {
@@ -42,11 +43,13 @@ export function RoomPage() {
           {room === undefined ? 
           <h1>LOADING</h1> : 
           <>
-            <h1>ROOM NUMBER {room['name']}</h1>
+            <h1>ROOM {room['name']}</h1>
             <div style={{display: "flex"}}>  
                 <div className="descritpionDiv">
-                    <h4>Description</h4>
+                    <h3 className="descriptionHeader">Description</h3>
+                    <hr></hr>
                     <p>{room['description']}</p>
+                    <hr></hr>
                     <p>Capacity: {room['capacity']}</p>
                     <p>Air conditioning {symbol(room['conditioning'])}</p>
                     <p>Wi-Fi {symbol(room['wifi'])}</p>
@@ -56,6 +59,12 @@ export function RoomPage() {
                     <p>Whiteboard {symbol(room['whiteboard'])}</p>
                 </div>
                 <Calendar>{room['id']}</Calendar>
+                <div className="UpcomingEventsDiv">
+                  <h3 id="eventsTableHeader">Upcoming events</h3>
+                  <hr></hr>
+                  <div id="eventTable">
+                  </div>
+                </div>
             </div>
           </>
           }

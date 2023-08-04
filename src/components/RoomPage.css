@@ -1,3 +1,6 @@
+h1 {
+    text-align: center;
+}
 
 .descritpionDiv p {
     margin-top: 0px;
@@ -14,12 +17,15 @@
 
 .descritpionDiv {
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-    margin-left: 20px;
+    margin-left: 2%;
+    margin-right: 5%;
     border: 2px solid #e6e6e6;
     border-radius: 5px;
+    width: 18%;
     height: -moz-fit-content;
     height: fit-content;
     display: inline-block;
+    border-radius: 20px;
 }
 
 .green {
@@ -28,4 +34,13 @@
 
 .red {
     color: red;
+}
+
+.descriptionHeader {
+    text-align: center;
+}
+
+hr {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    border: 1px solid #e6e6e6;
 }

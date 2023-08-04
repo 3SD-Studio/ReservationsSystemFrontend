@@ -48,7 +48,14 @@ export function Calendar(room) {
           {calendar.map((week) => (
            <tr>
             {week.map((day) => (
-              <td className={day.today ? "today" : ""}>{day.day}</td>
+              <td >
+                <div className={day.today ? "today" : "calendarItem"} onClick={() => {
+                  setEventsTableHeader(day)
+                  insertEvents(day)
+                }}>
+                  <div className='calendarItemText'>{day.day}</div>
+                </div>
+              </td>
            ))}
           </tr>
           ))}
@@ -57,6 +64,17 @@ export function Calendar(room) {
   )
 }
 
+const setEventsTableHeader = (day) => {
+  document.getElementById('eventsTableHeader').innerHTML = day.day + ' ' + getMonthString(day.month - 1) + ' ' + day.year
+}
+
+const insertEvents = (day) => {
+  
+  document.getElementById('eventTable').innerHTML = ''
+  for (let i = 0; i < 10; i++) {
+    document.getElementById('eventTable').innerHTML += '<h1>TEST' + i +'</h1>'
+  }
+}
 
 const getMonthString = (month) => {
   let array = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
