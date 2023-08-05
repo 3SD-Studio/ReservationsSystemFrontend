@@ -49,10 +49,12 @@ export function Calendar(room) {
            <tr>
             {week.map((day) => (
               <td >
-                <div className={day.today ? "today" : "calendarItem"} onClick={() => {
-                  setEventsTableHeader(day)
-                  insertEvents(day)
-                }}>
+                <div className={day.today ? "today" : "calendarItem"} 
+                  onClick={() => {
+                    setEventsTableHeader(day)
+                    insertEvents(day, room['children'])
+                  }
+                }>
                   <div className='calendarItemText'>{day.day}</div>
                 </div>
               </td>
@@ -68,18 +70,40 @@ const setEventsTableHeader = (day) => {
   document.getElementById('eventsTableHeader').innerHTML = day.day + ' ' + getMonthString(day.month - 1) + ' ' + day.year
 }
 
-const insertEvents = (day) => {
+const insertEvents = (day, roomId) => {
+  const fetchEvents = () => {
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
   
-  document.getElementById('eventTable').innerHTML = ''
-  for (let i = 0; i < 10; i++) {
-    document.getElementById('eventTable').innerHTML += '<h1>TEST' + i +'</h1>'
+    fetch("http://127.0.0.1:5000/room/" + roomId + 
+          "/events?day=" + day['day'] + 
+          "&month="+ day['month'] + 
+          "&year=" + day['year'],
+          requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        document.getElementById('eventTable').innerHTML = '';
+        result = JSON.parse(result);
+        result.map((event) => {
+          document.getElementById('eventTable').innerHTML += 
+          '<p>' + event['name'] + '</p>' + 
+          '<p>' + event['begin'] + '</p>' + 
+          '<p>' + event['end'] + '</p>'
+        });
+      })
+      .catch(error => console.log('error', error));
   }
+  fetchEvents();
 }
 
 const getMonthString = (month) => {
-  let array = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
-               'October', 'November', 'December']
-  return array[month]
+  let array = ['January', 'February', 'March', 'April', 
+               'May', 'June', 'July', 'August', 
+               'September', 'October', 'November', 'December'];
+
+  return array[month];
 }
 
 

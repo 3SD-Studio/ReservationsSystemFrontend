@@ -16,7 +16,8 @@ const symbol = (bool) => {
 
 export function RoomPage() {
     const { id } = useParams();
-    const [room, setRoom] = useState()
+    const [room, setRoom] = useState();
+    const [events, setEvents] = useState();
 
     const fetchRoomData = () => {
       var requestOptions = {
@@ -30,14 +31,34 @@ export function RoomPage() {
       fetch("http://127.0.0.1:5000/room/" + id , requestOptions)
       .then(response => response.json())
       .then(response => setRoom(response))
-      .catch(error => console.log('error', error))
+      .catch(error => console.log('error', error));
     }
+
+    const fetchUpcomingEvents = () => {
+      let resultArray = [];
+      var requestOptions = {
+        method: 'GET',
+        redirect: 'follow'
+      };
+      
+      fetch("http://127.0.0.1:5000/room/" + id + "/events?limit=10", requestOptions)
+        .then(response => response.text())
+        .then(result =>  {
+          console.log(result);
+          setEvents(JSON.parse(result));
+        })
+        .catch(error => console.log('error', error));
+
+      return resultArray;
+    }
+
       
     useEffect(() => {
-      fetchRoomData()
+      fetchRoomData();
+      fetchUpcomingEvents();
     }, [])
     
-
+  
     return (
         <>
           {room === undefined ? 
@@ -63,11 +84,32 @@ export function RoomPage() {
                   <h3 id="eventsTableHeader">Upcoming events</h3>
                   <hr></hr>
                   <div id="eventTable">
+                    {events === undefined ? <h1>LOADING</h1> : <>
+                    {events.map(event => {
+                      return (
+                        <div className="eventDiv">
+                          <h4>{event['name']}</h4>
+                          <p>{new Date(event['begin']).toLocaleDateString()}</p>
+                          <p>{event['description']}</p>
+                          <p>{new Date(event['begin']).getUTCHours()}:{ fixMinutesString(new Date(event['begin']).getUTCMinutes())}</p>
+                          <p>{new Date(event['end']).getUTCHours()}:{new Date(event['end']).getUTCMinutes()}</p>
+                        </div>
+                      )
+                    })
+                    }</>}
                   </div>
                 </div>
             </div>
           </>
           }
         </>
-    )
+    );
+}
+
+const fixMinutesString = (minutes) => { 
+  if (minutes < 10) {
+    return '0' + minutes
+  } else {
+    return minutes
+  }
 }
