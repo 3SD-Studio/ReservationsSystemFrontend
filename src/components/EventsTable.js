@@ -4,13 +4,14 @@ import "./EventsTable.css";
 
 export function EventsTable(props) {
   let events = props['events']
-  let setEventPopupOpen = props['setEventPopupOpen']
   let currentDay = props['day']
 
   return (
     <div className="UpcomingEventsDiv">
-      <h3 id="eventsTableHeader">{currentDay['year'] === -1 ? "Upcoming events" : currentDay.day + ' ' + getMonthString(currentDay.month - 1) + ' ' + currentDay.year}</h3>
-      <button className="openEventAddPopup" onClick={() => { setEventPopupOpen(true) }}>Add</button>
+      <h3 id="eventsTableHeader">{currentDay['year'] === -1 ? 
+      "Upcoming events" : 
+      currentDay.day + ' ' + getMonthString(currentDay.month - 1) + ' ' + currentDay.year}</h3>
+      <button className="openEventAddPopup" onClick={() => { props['handleAddEvent'](); }}>Add</button>
       <hr></hr>
       <div id="eventTable">
         {events === undefined ? <h1>LOADING</h1> : <>
