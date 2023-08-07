@@ -2,29 +2,31 @@ import { useState, useEffect } from 'react'
 
 import './Calendar.css'
 
-export function Calendar(room) {
+export function Calendar(props) {
   const [month, setMonth] = useState(getMonthString(new Date().getMonth()))
-  const [events, setEvents] = useState([{}])
   const [calendar, setCalendar] = useState([[{}]])
   
-  var requestOptions = {
-    method: 'GET',
-    redirect: 'follow',
-    headers: {
-      'Accept': 'application/json'
-    },
-  };
-    
-  const fetchEventsData = () => {
-    fetch("http://127.0.0.1:5000/room/" + room['children'] + "/events", requestOptions)
-      .then(response => response.json())
-      .then(result => setEvents(result))
+  const fetchEvents = (day, roomId) => {
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+  
+    fetch("http://127.0.0.1:5000/room/" + roomId + 
+          "/events?day=" + day['day'] + 
+          "&month="+ day['month'] + 
+          "&year=" + day['year'],
+          requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        result = JSON.parse(result);
+        props['handleSetEevent'](result);
+      })
       .catch(error => console.log('error', error));
   }
 
   useEffect(() => {
-    fetchEventsData()
-    setCalendar(generateCalendar(new Date().getFullYear(), new Date().getMonth(), events))
+    setCalendar(generateCalendar(new Date().getFullYear(), new Date().getMonth()))
   }, [])
   
   if (calendar === undefined) {
@@ -51,8 +53,8 @@ export function Calendar(room) {
               <td >
                 <div className={day.today ? "today" : "calendarItem"} 
                   onClick={() => {
-                    setEventsTableHeader(day)
-                    insertEvents(day, room['children'])
+                    props['hadnleSetDay'](day)  
+                    fetchEvents(day, props['children'])
                   }
                 }>
                   <div className='calendarItemText'>{day.day}</div>
@@ -66,39 +68,6 @@ export function Calendar(room) {
   )
 }
 
-const setEventsTableHeader = (day) => {
-  document.getElementById('eventsTableHeader').innerHTML = day.day + ' ' + getMonthString(day.month - 1) + ' ' + day.year
-}
-
-const insertEvents = (day, roomId) => {
-  const fetchEvents = () => {
-    var requestOptions = {
-      method: 'GET',
-      redirect: 'follow'
-    };
-  
-    fetch("http://127.0.0.1:5000/room/" + roomId + 
-          "/events?day=" + day['day'] + 
-          "&month="+ day['month'] + 
-          "&year=" + day['year'],
-          requestOptions)
-      .then(response => response.text())
-      .then(result => {
-        document.getElementById('eventTable').innerHTML = '';
-        result = JSON.parse(result);
-        result.map((event) => {
-          document.getElementById('eventTable').innerHTML += 
-          '<div class="eventDiv">' + 
-            '<p>' + event['name'] + '</p>' + 
-            '<p>' + event['begin'] + '</p>' + 
-            '<p>' + event['end'] + '</p>' +
-          '</div>'
-        });
-      })
-      .catch(error => console.log('error', error));
-  }
-  fetchEvents();
-}
 
 const getMonthString = (month) => {
   let array = ['January', 'February', 'March', 'April', 
@@ -109,7 +78,7 @@ const getMonthString = (month) => {
 }
 
 
-const generateCalendar = (year, month, events) => {
+const generateCalendar = (year, month) => {
   let isCurrentMonth = (year === new Date().getFullYear() && month === new Date().getMonth()) ? true : false;
   const fixSunday = (day) => {
     return day === 0 ? 7 : day;

@@ -1,15 +1,17 @@
+//Import react library and hooks
+import React from "react";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
-import { Calendar } from "./Calendar";
-
+//Import css for this component
 import './RoomPage.css'
-import './UpcomingEvents.css'
 
-
+//Import components 
 import { EventPopup } from "./EventPopup";
 import { RoomDescription } from "./RoomDescription";
 import { EventsTable } from "./EventsTable";
+import { Calendar } from "./Calendar";
+
 
 export function RoomPage() {
     const { id } = useParams();
@@ -67,8 +69,8 @@ export function RoomPage() {
             <div style={{display: "flex"}}>  
                 <RoomDescription>{room}</RoomDescription>
                 <Calendar hadnleSetDay={(day) => setCurrentDay(day)} handleSetEevent={(events) => setEvents(events)}>{room['id']}</Calendar>
-                <EventsTable day={currentDay} events={events}></EventsTable>
-                {eventPopupOpen && <EventPopup handleClose={() => {setEventPopupOpen(false);}} roomId={id}>{currentDay}</EventPopup>}
+                <EventsTable day={currentDay} events={events} handleAddEvent={() => {setEventPopupOpen(true);}}></EventsTable>
+                {eventPopupOpen && <EventPopup  handleClose={() => {setEventPopupOpen(false);}} roomId={id}>{currentDay}</EventPopup>}
             </div>
           </>
           }

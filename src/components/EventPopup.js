@@ -72,7 +72,6 @@ export function EventPopup(props) {
           }>Add event</button>
         </div>
       </div>
-      <button className="closeButton" onClick={props['handleClose']}>x</button>
     </div>)
 }
 
