@@ -88,9 +88,11 @@ const insertEvents = (day, roomId) => {
         result = JSON.parse(result);
         result.map((event) => {
           document.getElementById('eventTable').innerHTML += 
-          '<p>' + event['name'] + '</p>' + 
-          '<p>' + event['begin'] + '</p>' + 
-          '<p>' + event['end'] + '</p>'
+          '<div class="eventDiv">' + 
+            '<p>' + event['name'] + '</p>' + 
+            '<p>' + event['begin'] + '</p>' + 
+            '<p>' + event['end'] + '</p>' +
+          '</div>'
         });
       })
       .catch(error => console.log('error', error));

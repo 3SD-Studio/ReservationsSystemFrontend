@@ -6,18 +6,17 @@ import { Calendar } from "./Calendar";
 import './RoomPage.css'
 import './UpcomingEvents.css'
 
-const symbol = (bool) => {
-    if (bool) {
-        return <b className="green">&#x2713;</b>
-    } else {
-        return <b className="red">&#x2717;</b>
-    }
-} 
+
+import { EventPopup } from "./EventPopup";
+import { RoomDescription } from "./RoomDescription";
+import { EventsTable } from "./EventsTable";
 
 export function RoomPage() {
     const { id } = useParams();
     const [room, setRoom] = useState();
     const [events, setEvents] = useState();
+    const [eventPopupOpen, setEventPopupOpen] = useState(false);
+    const [currentDay, setCurrentDay] = useState({'day': -1, 'month': -1, 'year': -1});
 
     const fetchRoomData = () => {
       var requestOptions = {
@@ -66,50 +65,13 @@ export function RoomPage() {
           <>
             <h1>ROOM {room['name']}</h1>
             <div style={{display: "flex"}}>  
-                <div className="descritpionDiv">
-                    <h3 className="descriptionHeader">Description</h3>
-                    <hr></hr>
-                    <p>{room['description']}</p>
-                    <hr></hr>
-                    <p>Capacity: {room['capacity']}</p>
-                    <p>Air conditioning {symbol(room['conditioning'])}</p>
-                    <p>Wi-Fi {symbol(room['wifi'])}</p>
-                    <p>Ethernet {symbol(room['ethernet'])}</p>
-                    <p>Projector  {symbol(room['projector'])}</p>
-                    <p>TV {symbol(room['tv'])}</p>
-                    <p>Whiteboard {symbol(room['whiteboard'])}</p>
-                </div>
-                <Calendar>{room['id']}</Calendar>
-                <div className="UpcomingEventsDiv">
-                  <h3 id="eventsTableHeader">Upcoming events</h3>
-                  <hr></hr>
-                  <div id="eventTable">
-                    {events === undefined ? <h1>LOADING</h1> : <>
-                    {events.map(event => {
-                      return (
-                        <div className="eventDiv">
-                          <h4>{event['name']}</h4>
-                          <p>{new Date(event['begin']).toLocaleDateString()}</p>
-                          <p>{event['description']}</p>
-                          <p>{new Date(event['begin']).getUTCHours()}:{ fixMinutesString(new Date(event['begin']).getUTCMinutes())}</p>
-                          <p>{new Date(event['end']).getUTCHours()}:{new Date(event['end']).getUTCMinutes()}</p>
-                        </div>
-                      )
-                    })
-                    }</>}
-                  </div>
-                </div>
+                <RoomDescription>{room}</RoomDescription>
+                <Calendar hadnleSetDay={(day) => setCurrentDay(day)} handleSetEevent={(events) => setEvents(events)}>{room['id']}</Calendar>
+                <EventsTable day={currentDay} events={events}></EventsTable>
+                {eventPopupOpen && <EventPopup handleClose={() => {setEventPopupOpen(false);}} roomId={id}>{currentDay}</EventPopup>}
             </div>
           </>
           }
         </>
     );
-}
-
-const fixMinutesString = (minutes) => { 
-  if (minutes < 10) {
-    return '0' + minutes
-  } else {
-    return minutes
-  }
 }
