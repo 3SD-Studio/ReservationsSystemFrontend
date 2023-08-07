@@ -18,7 +18,7 @@ export function EventPopup(props) {
         parseInt(props['roomId'])
       ]
     });
-    
+
     var requestOptions = {
       method: 'POST',
       headers: myHeaders,
@@ -37,7 +37,7 @@ export function EventPopup(props) {
       <div className="popupForeground">
         <div className="popupContent">
           <h3>Add event on {props['children']['day'] + "/" + props['children']['month'] + "/" + props['children']['year']}</h3>
-          <form>
+          <form className="popupForm">
             <label for="name">Name:</label>
             <br />
             <input type="text" id='name' />
@@ -64,12 +64,14 @@ export function EventPopup(props) {
             <br /><br />
 
           </form>
-          <button onClick={() => { props['handleClose'](); }}>Cancel</button>
-          <button onClick={() => {
-            postEvent();
-            props['handleClose']();
-          }
-          }>Add event</button>
+          <div className="buttonContainer">
+            <button onClick={() => { props['handleClose'](); }}>Cancel</button>
+            <button onClick={() => {
+              postEvent();
+              props['handleClose']();
+            }
+            }>Add event</button>
+          </div>
         </div>
       </div>
     </div>)

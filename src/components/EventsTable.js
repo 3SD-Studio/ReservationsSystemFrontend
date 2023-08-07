@@ -22,7 +22,7 @@ export function EventsTable(props) {
                 <p>{new Date(event['begin']).toLocaleDateString()}</p>
                 <p>{event['description']}</p>
                 <p>{new Date(event['begin']).getUTCHours()}:{fixMinutesString(new Date(event['begin']).getUTCMinutes())}</p>
-                <p>{new Date(event['end']).getUTCHours()}:{new Date(event['end']).getUTCMinutes()}</p>
+                <p>{new Date(event['end']).getUTCHours()}:{fixMinutesString(new Date(event['end']).getUTCMinutes())}</p>
               </div>
             )
           })

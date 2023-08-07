@@ -9,9 +9,69 @@
 
 .popupForeground {
     position: relative;
-    width: 60%;
-    min-height: 60%;
+    width:40%;
+    min-height: 80%;
     background-color: #fff;
-    margin: 180px auto;
+    margin: 80px auto;
     border-radius: 20px;
+}
+
+.popupForm {
+    width: 70%;
+    margin: 0 auto;
+}
+
+/* Style for labels */
+.popupForm label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+/* Style for inputs and textareas */
+.popupForm input[type="text"],
+.popupForm textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Style for time inputs */
+.popupForm input[type="time"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Style for buttons */
+.popupForeground button {
+    padding: 10px 20px;
+    margin-right: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Style for Cancel button */
+.popupForeground button:first-child {
+    background-color: #ccc;
+    color: #fff;
+}
+
+/* Style for Add event button */
+.popupForeground button:last-child {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.buttonContainer {
+    width: 30%;
+    margin-left: 35%;
+    margin-right: 35%;
 }
