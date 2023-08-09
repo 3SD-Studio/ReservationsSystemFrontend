@@ -1,0 +1,38 @@
+.formBox {
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    padding: 15px;
+    font-size: large;
+    margin: 80px auto;
+    width: -moz-fit-content;
+    width: fit-content;
+    align-items: center;
+}
+
+.formBox input {
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 10px 0px;
+    font-size: large;
+    width: 300px;
+    margin-bottom: 20px;
+}
+
+.formBox label {
+    font-size: large;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.formBox button {
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    padding: 10px 0px;
+    font-size: large;
+    width: 100px;
+    display: block;
+    margin: auto;
+    margin-bottom: 5px;
+    background-color: #ccc;
+    cursor: pointer;
+}

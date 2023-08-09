@@ -8,10 +8,13 @@ export function EventsTable(props) {
 
   return (
     <div className="UpcomingEventsDiv">
-      <h3 id="eventsTableHeader">{currentDay['year'] === -1 ? 
-      "Upcoming events" : 
-      currentDay.day + ' ' + getMonthString(currentDay.month - 1) + ' ' + currentDay.year}</h3>
-      <button className="openEventAddPopup" onClick={() => { props['handleAddEvent'](); }}>Add</button>
+      {currentDay['year'] === -1 ?
+        <h3 id="eventsTableHeader">Upcoming events</h3> :
+        <>
+          <h3>{currentDay.day + ' ' + getMonthString(currentDay.month - 1) + ' ' + currentDay.year}</h3>
+          <button className="openEventAddPopup" onClick={() => { props['handleAddEvent'](); }}>Add</button>
+        </>
+      }
       <hr></hr>
       <div id="eventTable">
         {events === undefined ? <h1>LOADING</h1> : <>
@@ -21,7 +24,10 @@ export function EventsTable(props) {
                 <h4>{event['name']}</h4>
                 <p>{new Date(event['begin']).toLocaleDateString()}</p>
                 <p>{event['description']}</p>
-                <p>{new Date(event['begin']).getUTCHours()}:{fixMinutesString(new Date(event['begin']).getUTCMinutes())}</p>
+                <p>{new Date(event['begin']).getUTCHours()}:
+                  {
+                    fixMinutesString(new Date(event['begin']).getUTCMinutes())
+                  }</p>
                 <p>{new Date(event['end']).getUTCHours()}:{fixMinutesString(new Date(event['end']).getUTCMinutes())}</p>
               </div>
             )
