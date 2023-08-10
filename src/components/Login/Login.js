@@ -32,6 +32,12 @@ export function Login() {
     fetch("http://127.0.0.1:5000/login", requestOptions)
       .then(response => {
         if (response.status === 200) {
+          response.text()
+          .then((text) => {
+            let token = JSON.parse(text);
+            localStorage.setItem('token', token['token']);
+            console.log(localStorage.getItem('token'));
+          })
           navigate('/rooms');
         }
         else {
