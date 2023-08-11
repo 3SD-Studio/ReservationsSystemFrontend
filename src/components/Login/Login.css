@@ -37,6 +37,11 @@
     cursor: pointer;
 }
 
+.formBox h3 {
+    width: 100%;
+    text-align: center;
+}
+
 #link {
     margin:auto;
     width: -moz-fit-content;

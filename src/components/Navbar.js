@@ -1,13 +1,10 @@
-import React, { useEffect } from 'react';
-import { useState } from 'react';
+import React from "react";
 
 import { Link } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
 
 import './Navbar.css'
 
 export function Navbar(props) {
-  const navigate = useNavigate();
   let currentUser = props['currentUser'];
 
   return (
