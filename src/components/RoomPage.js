@@ -19,24 +19,6 @@ export function RoomPage() {
     const [events, setEvents] = useState();
     const [eventPopupOpen, setEventPopupOpen] = useState(false);
     const [currentDay, setCurrentDay] = useState({'day': -1, 'month': -1, 'year': -1});
-    const [currentUser, setCurrentUser] = useState();
-
-
-    const fetchUserData = () => {
-      var requestOptions = {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          "Authorization": "Bearer " + localStorage.getItem('token')
-        },
-        redirect: 'follow'
-      }
-        
-      fetch("http://127.0.0.1:5000/current_user", requestOptions)
-      .then(response => response.json())
-      .then(response => setCurrentUser(response['firstName']))
-      .catch(error => console.log('error', error));
-    }
     const fetchRoomData = () => {
       var requestOptions = {
         method: 'GET',
@@ -75,7 +57,6 @@ export function RoomPage() {
     useEffect(() => {
       fetchRoomData();
       fetchUpcomingEvents();
-      fetchUserData();
     }, [])
     
   
@@ -85,7 +66,6 @@ export function RoomPage() {
           <h1>LOADING</h1> : 
           <>
             <h1>ROOM {room['name']}</h1>
-            <h1>Hello, {currentUser}</h1>
             <div style={{display: "flex"}}>  
                 <RoomDescription>{room}</RoomDescription>
                 <Calendar hadnleSetDay={(day) => setCurrentDay(day)} handleSetEevent={(events) => setEvents(events)}>{room['id']}</Calendar>

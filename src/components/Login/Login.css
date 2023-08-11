@@ -36,3 +36,9 @@
     background-color: #ccc;
     cursor: pointer;
 }
+
+#link {
+    margin:auto;
+    width: -moz-fit-content;
+    width: fit-content;
+}

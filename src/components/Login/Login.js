@@ -38,7 +38,7 @@ export function Login() {
             localStorage.setItem('token', token['token']);
             console.log(localStorage.getItem('token'));
           })
-          navigate('/rooms');
+          window.location.href = '/rooms';
         }
         else {
           alert("Wrong email or password");

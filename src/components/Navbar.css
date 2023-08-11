@@ -1,0 +1,79 @@
+:root{
+    --hover-color: #75cf1b;
+}
+
+body,
+ul,
+li {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+nav {
+    background-color: #333;
+    color: white;
+}
+
+.left {
+    float: left;
+    width: 75%;
+    margin: 0 10px;
+}
+.left li a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+.left li a:hover {
+    color: var(--hover-color);
+}
+
+.linkWrapper {
+    color: white;
+    
+}
+
+.linkWrapper :visited {
+    color: white;
+}
+
+.nav-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+.brand-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: white;
+    margin: 0;
+    /* Center the logo */
+}
+
+ul#navUser{
+    display: flex;
+    align-items: center;
+}
+
+ul#navUser li {
+    margin-right: 15px;
+}
+
+ul#navUser li:last-child {
+    margin-right: 0;
+}
+
+ul#navUser li a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+}
+
+/* Style links on hover */
+ul#navUser li a:hover {
+    color: var(--hover-color);
+}
