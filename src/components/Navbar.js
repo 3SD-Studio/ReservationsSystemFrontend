@@ -20,7 +20,7 @@ export function Navbar(props) {
         </ul>
         <ul id="navUser">
           {currentUser ? <>
-            <li><Link to="/">Hi, {currentUser}</Link></li>
+            <li><Link to="/profile">Hi, {currentUser}</Link></li>
             <li><Link to="/logout">Logout</Link></li>
           </> :
             <>

@@ -6,6 +6,7 @@ export function EventPopup(props) {
   const postEvent = () => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer " + localStorage.getItem('token'));
 
     var raw = JSON.stringify({
       "name": document.getElementById('name').value,
@@ -13,7 +14,6 @@ export function EventPopup(props) {
       "link": document.getElementById('link').value,
       "begin": createDateTime(props['children'], document.getElementById('startTime').value),
       "end": createDateTime(props['children'], document.getElementById('endTime').value),
-      "ownerId": 1,
       "roomsId": [
         parseInt(props['roomId'])
       ]

@@ -14,6 +14,7 @@ import { Login } from './components/Login/Login.js'
 import { Register } from './components/Login/Register.js'
 import { Logout } from './components/Login/Logout.js'
 import { Navbar } from './components/Navbar.js';
+import { Profile } from './components/Profile.js';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState();
@@ -28,7 +29,7 @@ export default function App() {
       redirect: 'follow'
     }
       
-    fetch("http://127.0.0.1:5000/current_user", requestOptions)
+    fetch("http://127.0.0.1:5000/user", requestOptions)
     .then(response => response.json())
     .then(response => setCurrentUser(response['firstName']))
     .catch(error => console.log('error', error));
@@ -49,6 +50,7 @@ export default function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/logout' element={<Logout />} />
+          <Route path='/profile' element={<Profile>{currentUser}</Profile>} />
         </Routes>
       </BrowserRouter>
     </>
