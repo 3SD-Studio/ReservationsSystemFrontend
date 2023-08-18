@@ -1,13 +1,34 @@
 import React from "react"
 
-import QRCode from "react-qr-code"
 
+import { useParams, useLocation } from "react-router-dom";
+  
+
+
+
+function useQuery() {
+    const { search } = useLocation();
+  
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+  }
 
 export function EditEvent() {
-    return (
-        <div>
-            <h1>Edit Event</h1>
-            <QRCode value="dupa" />
-        </div>
-    )
+    let { id } = useParams();
+    let query = useQuery();
+    if (query.get('editCode')) {
+        return (
+            <div>
+                <h1>Event</h1>
+                <h1>Event {query.get('editCode')}</h1>
+            </div>
+        )
+    }
+    else {
+        return (
+            <div>
+                <h1>Event {id}</h1>
+            </div>
+        )
+    }
+    
 }  
