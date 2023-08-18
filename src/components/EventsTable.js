@@ -1,10 +1,12 @@
 import React from "react";
 
+import { EventItem } from "./EventItem";
+
 import "./EventsTable.css";
 
 export function EventsTable(props) {
-  let events = props['events']
-  let currentDay = props['day']
+  const events = props['events']
+  const currentDay = props['day']
 
   return (
     <div className="UpcomingEventsDiv">
@@ -17,33 +19,10 @@ export function EventsTable(props) {
       }
       <hr></hr>
       <div id="eventTable">
-        {events === undefined ? <h1>LOADING</h1> : <>
-          {events.map(event => {
-            return (
-              <div className="eventDiv">
-                <h4>{event['name']}</h4>
-                <p>{new Date(event['begin']).toLocaleDateString()}</p>
-                <p>{event['description']}</p>
-                <p>{new Date(event['begin']).getUTCHours()}:
-                  {
-                    fixMinutesString(new Date(event['begin']).getUTCMinutes())
-                  }</p>
-                <p>{new Date(event['end']).getUTCHours()}:{fixMinutesString(new Date(event['end']).getUTCMinutes())}</p>
-              </div>
-            )
-          })
-          }</>}
+        {events === undefined ? <h1>LOADING</h1> : <EventItem events={events}/>}
       </div>
     </div>
   )
-}
-
-const fixMinutesString = (minutes) => {
-  if (minutes < 10) {
-    return '0' + minutes
-  } else {
-    return minutes
-  }
 }
 
 const getMonthString = (month) => {

@@ -2,6 +2,8 @@ import React from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
 
+import { EventItem } from './EventItem';
+
 export function Profile(props) {
   const [currentUser, setCurrentUser] = useState();
   const [userEvents, setUserEvents] = useState();
@@ -53,19 +55,7 @@ export function Profile(props) {
           <h2>Last name:  {currentUser['lastName']}</h2>
           <h2>email:      {currentUser['email']}</h2>
           <h3>Upcoming events:</h3>
-          {userEvents === undefined ? <h1>LOADING</h1> : userEvents.map(event => {
-            return (
-              <div className="eventDiv">
-                <h4>{event['name']}</h4>
-                <p>{new Date(event['begin']).toLocaleDateString()}</p>
-                <p>{event['description']}</p>
-                <p>{new Date(event['begin']).getUTCHours()}:
-                  {
-                    fixMinutesString(new Date(event['begin']).getUTCMinutes())
-                  }</p>
-                <p>{new Date(event['end']).getUTCHours()}:{fixMinutesString(new Date(event['end']).getUTCMinutes())}</p>
-              </div>   
-          )})}
+          {userEvents === undefined ? <h1>LOADING</h1> : <EventItem events={userEvents} />}
         </>
         : <h1>LOADING</h1>
       }
@@ -73,18 +63,3 @@ export function Profile(props) {
   )
 }
 
-const fixMinutesString = (minutes) => {
-  if (minutes < 10) {
-    return '0' + minutes
-  } else {
-    return minutes
-  }
-}
-
-const getMonthString = (month) => {
-  let array = ['January', 'February', 'March', 'April',
-    'May', 'June', 'July', 'August',
-    'September', 'October', 'November', 'December'];
-
-  return array[month];
-}
