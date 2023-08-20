@@ -1,18 +1,14 @@
 import React from "react"
 
-
 import { useParams, useLocation } from "react-router-dom";
   
-
-
-
 function useQuery() {
     const { search } = useLocation();
   
     return React.useMemo(() => new URLSearchParams(search), [search]);
   }
 
-export function EditEvent() {
+export function EventPage() {
     let { id } = useParams();
     let query = useQuery();
     if (query.get('editCode')) {

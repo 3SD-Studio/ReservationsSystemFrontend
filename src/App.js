@@ -15,7 +15,7 @@ import { Register } from './components/Login/Register.js'
 import { Logout } from './components/Login/Logout.js'
 import { Navbar } from './components/Navbar.js';
 import { Profile } from './components/Profile.js';
-import { EditEvent } from './components/EditEvent.js';
+import { EventPage } from './components/EventPage.js';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState();
@@ -52,7 +52,7 @@ export default function App() {
           <Route path='/register' element={<Register />} />
           <Route path='/logout' element={<Logout />} />
           <Route path='/profile' element={<Profile>{currentUser}</Profile>} />
-          <Route path='/event/:id' element={<EditEvent />}/>
+          <Route path='/event/:id' element={<EventPage />}/>
           <Route path='*' element={<h1>404</h1>} />
         </Routes>
       </BrowserRouter>
