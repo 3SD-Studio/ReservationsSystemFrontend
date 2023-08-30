@@ -18,6 +18,9 @@ export function EventPage() {
   }
 
   const [event, setEvent] = useState();
+  const [dateString, setDateString] = useState(new Date());
+  const [beginTimeString, setBeginTimeString] = useState(new Date());
+  const [endTimeString, setEndTimeString] = useState(new Date());
 
   const fetchEventData = () => {
     var requestOptions = {
@@ -27,41 +30,54 @@ export function EventPage() {
 
     fetch("http://127.0.0.1:5000/event/" + id, requestOptions)
       .then(response => response.json())
-      .then(result => setEvent(result))
+      .then(result => {
+        setEvent(result);
+        setDateAndTime(result);
+      })
       .catch(error => console.log('error', error));
   }
 
   const saveEventChanges = () => {
+    
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2OTIwODk5MDgsImlhdCI6MTY5MjAwMzUwOCwic3ViIjoyfQ.SeYaKjTKXKadIfcisG_N3OACL-wB7KS7gKrLyb29JLM");
-    
+    myHeaders.append("Authorization", "Bearer " + localStorage.getItem('token'));
+
     var raw = JSON.stringify({
       "name": event['name'],
       "description": event['description'],
       "link": event['link'],
-      "begin": "2023-08-20T09:00:00",
-      "end": "2023-08-20T09:30:00",
-      "roomsId": [
-        1
-      ]
+      "begin": dateString + "T" + beginTimeString + ":00",
+      "end": dateString + "T" + endTimeString + ":00",
     });
-    
+
     var requestOptions = {
       method: 'PATCH',
       headers: myHeaders,
       body: raw,
       redirect: 'follow'
     };
-    
-    fetch("127.0.0.1:5000/event/21?password=CeOy5Z7v", requestOptions)
+
+    fetch("http://127.0.0.1:5000/event/" + event['id'] + "?password=" + query.get('editCode'), requestOptions)
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
   }
 
+  const setDateAndTime = (event) => {
+    setDateString(new Date(event['begin']).toISOString().split('T')[0]);
+    setBeginTimeString(
+      fixMinutesString(new Date(event['begin']).getHours()) + ":" +
+      fixMinutesString(new Date(event['begin']).getMinutes())
+    );
+    setEndTimeString(
+      fixMinutesString(new Date(event['end']).getHours()) + ":" +
+      fixMinutesString(new Date(event['end']).getMinutes())
+    );
+  }
+
   useEffect(() => {
-    fetchEventData()
+    fetchEventData();
   }, [])
 
   return (
@@ -72,27 +88,67 @@ export function EventPage() {
           <form>
             <label>Name</label>
             <br />
-            <input type="text" name="name" defaultValue={event['name']} disabled={disabled} />
+            <input
+              type="text"
+              name="name"
+              defaultValue={event['name']}
+              disabled={disabled}
+              onChange={(text) => {
+                event['name'] = text.target.value;
+                setEvent(event);
+              }} />
             <br /><br />
             <label>Link</label>
             <br />
-            <input type="text" name="name" defaultValue={event['link']} disabled={disabled} />
+            <input
+              type="text"
+              name="link"
+              defaultValue={event['link']}
+              disabled={disabled}
+              onChange={(text) => {
+                event['link'] = text.target.value;
+                setEvent(event);
+              }} />
             <br /><br />
             <label>Description</label>
             <br />
-            <input type="text" name="name" defaultValue={event['description']} disabled={disabled} />
+            <input
+              type="textarea"
+              name="description"
+              defaultValue={event['description']}
+              disabled={disabled}
+              onChange={(text) => {
+                event['description'] = text.target.value;
+                setEvent(event);
+              }} />
             <br /><br />
             <label>Date</label>
             <br />
-            <input type="date" name="name" defaultValue={new Date(event['begin']).getUTCDate().toLocaleString()} disabled={disabled} />
+            <input
+              type="date"
+              name="date"
+              defaultValue={dateString}
+              disabled={disabled}
+              onChange={(text) => { setDateString(text.target.value); }} />
             <br /><br />
             <label>Start</label>
             <br />
-            <input type="time" name="name" defaultValue={fixMinutesString(new Date(event['begin']).getHours()) + ":" + fixMinutesString(new Date(event['begin']).getMinutes())} disabled={disabled} />
+            <input
+              type="time"
+              name="start"
+              defaultValue={beginTimeString}
+              disabled={disabled}
+              onChange={(text) => { setBeginTimeString(text.target.value); }}
+            />
             <br /><br />
             <label>End</label>
             <br />
-            <input type="Time" name="name" defaultValue={fixMinutesString(new Date(event['end']).getHours()) + ":" + fixMinutesString(new Date(event['end']).getMinutes())} disabled={disabled} />
+            <input
+              type="Time"
+              name="end"
+              defaultValue={endTimeString}
+              disabled={disabled}
+              onChange={(text) => { setEndTimeString(text.target.value); }} />
             <br /><br />
             {!disabled && <input type="button" value="Save" onClick={() => saveEventChanges()} />}
           </form>
