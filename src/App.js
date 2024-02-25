@@ -3,19 +3,16 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 
 import { Route, Routes, } from 'react-router-dom'
-import { Link } from 'react-router-dom';
-
-// We will create these two pages in a moment
-import { RoomList } from "./components/RoomList.js"
-import { RoomPage } from "./components/RoomPage.js"
+import { RoomList } from "./components/Room/RoomList.js"
+import { RoomPage } from "./components/Room/RoomPage.js"
 import { BrowserRouter } from 'react-router-dom'
 import { MainPage } from './components/MainPage.js'
 import { Login } from './components/Login/Login.js'
 import { Register } from './components/Login/Register.js'
 import { Logout } from './components/Login/Logout.js'
-import { Navbar } from './components/Navbar.js';
-import { Profile } from './components/Profile.js';
-import { EventPage } from './components/EventPage.js';
+import { Navbar } from './components/Navbar/Navbar.js';
+import { Profile } from './components/Profile/Profile.js';
+import { EventPage } from './components/Event/EventPage.js';
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState();

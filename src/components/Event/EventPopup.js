@@ -47,7 +47,7 @@ export function EventPopup(props) {
   return (
     <div className="popupBackground">
       <div className="popupForeground">
-        {!eventCreated === true ?
+        {!eventCreated ?
           <>
             <div className="popupContent">
               <h3>Add event on {props['children']['day'] + "/" + props['children']['month'] + "/" + props['children']['year']}</h3>

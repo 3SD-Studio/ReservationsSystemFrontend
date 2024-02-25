@@ -7,11 +7,11 @@ import { useParams } from "react-router-dom";
 import './RoomPage.css'
 
 //Import components 
-import { EventPopup } from "./EventPopup";
+import { EventPopup } from "../Event/EventPopup";
 import { RoomDescription } from "./RoomDescription";
-import { EventsTable } from "./EventsTable";
-import { Calendar } from "./Calendar";
-
+import { EventsTable } from "../Event/EventsTable";
+//import { Calendar } from "./calendar/Calendar";
+import { Calendar } from "../Calendar/Calendar";
 
 export function RoomPage() {
     const { id } = useParams();
