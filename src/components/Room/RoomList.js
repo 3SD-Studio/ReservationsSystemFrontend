@@ -1,28 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
+import { fetchRoomsData } from '../../functions/ApiUtils';
 
+
+/**
+ * Renders a list of rooms and allows the user to choose a room from the list.
+ * @returns {JSX.Element} The rendered RoomList component.
+ */
 export function RoomList() {
-  const[rooms, setRooms] = useState([])
+  const [rooms, setRooms] = useState([])
 
-  const fetchRoomsData = () => {
-    var requestOptions = {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json'
-      },
-    }
-    
-    fetch("http://127.0.0.1:5000/rooms", requestOptions)
-    .then(response => response.json())
-    .then(response => setRooms(response))
-    .catch(error => console.log('error', error))
-  }
-  
   useEffect(() => {
-    fetchRoomsData()
+    fetchRoomsData(setRooms)
   }, [])
 
-  
+
   return (
     <div className="RoomsListDiv">
       <h1>Choose room from list:</h1>

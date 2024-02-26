@@ -5,6 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import './EventItem.css'
 
 
+/**
+ * Renders a list of event items.
+ *
+ * @param {Object} props - The component props.
+ * @param {Array} props.events - The array of events to render.
+ * @returns {JSX.Element} The rendered event items.
+ */
 export function EventItem(props) {
   const navigate = useNavigate();
 
@@ -30,6 +37,12 @@ export function EventItem(props) {
 }
 
 
+/**
+ * Fixes the minutes string by adding a leading zero if the minutes value is less than 10.
+ * 
+ * @param {number} minutes - The minutes value to be fixed.
+ * @returns {string} - The fixed minutes string.
+ */
 const fixMinutesString = (minutes) => {
   if (minutes < 10) {
     return '0' + minutes

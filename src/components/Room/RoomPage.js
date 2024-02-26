@@ -10,56 +10,26 @@ import './RoomPage.css'
 import { EventPopup } from "../Event/EventPopup";
 import { RoomDescription } from "./RoomDescription";
 import { EventsTable } from "../Event/EventsTable";
-//import { Calendar } from "./calendar/Calendar";
 import { Calendar } from "../Calendar/Calendar";
+import { fetchRoomData, fetchUpcomingEvents } from "../../functions/ApiUtils";
 
+/**
+ * Renders the RoomPage component.
+ * 
+ * @returns {JSX.Element} The rendered RoomPage component.
+ */
 export function RoomPage() {
     const { id } = useParams();
     const [room, setRoom] = useState();
     const [events, setEvents] = useState();
     const [eventPopupOpen, setEventPopupOpen] = useState(false);
     const [currentDay, setCurrentDay] = useState({'day': -1, 'month': -1, 'year': -1});
-    const fetchRoomData = () => {
-      var requestOptions = {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json'
-        },
-        redirect: 'follow'
-      }
-        
-      fetch("http://127.0.0.1:5000/room/" + id , requestOptions)
-      .then(response => response.json())
-      .then(response => setRoom(response))
-      .catch(error => console.log('error', error));
-    }
-
-    const fetchUpcomingEvents = () => {
-      let resultArray = [];
-      var requestOptions = {
-        method: 'GET',
-        redirect: 'follow'
-      };
-      
-      fetch("http://127.0.0.1:5000/room/" + id + "/events?limit=10", requestOptions)
-        .then(response => response.text())
-        .then(result =>  {
-          console.log(result);
-          setEvents(JSON.parse(result));
-        })
-        .catch(error => console.log('error', error));
-
-      return resultArray;
-    }
-
-
-      
+    
     useEffect(() => {
-      fetchRoomData();
-      fetchUpcomingEvents();
+      fetchRoomData(id, setRoom);
+      fetchUpcomingEvents(id, setEvents);
     }, [])
     
-  
     return (
         <>
           {room === undefined ? 

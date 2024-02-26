@@ -4,6 +4,13 @@ import { Link } from 'react-router-dom';
 
 import './Navbar.css'
 
+/**
+ * Renders the navigation bar component.
+ * 
+ * @param {Object} props - The component props.
+ * @param {string} props.currentUser - The current user's name.
+ * @returns {JSX.Element} The rendered navigation bar.
+ */
 export function Navbar(props) {
   let currentUser = props['currentUser'];
 

@@ -2,7 +2,14 @@ import React, { useEffect } from "react"
 import { useState } from "react";
 
 import { useParams, useLocation } from "react-router-dom";
+import { saveEventChanges } from "../../functions/ApiUtils";
+import { fetchEventData } from "../../functions/ApiUtils";
 
+/**
+ * Custom hook that parses the query parameters from the current URL.
+ * 
+ * @returns {URLSearchParams} The parsed query parameters.
+ */
 function useQuery() {
   const { search } = useLocation();
 
@@ -22,48 +29,6 @@ export function EventPage() {
   const [beginTimeString, setBeginTimeString] = useState(new Date());
   const [endTimeString, setEndTimeString] = useState(new Date());
 
-  const fetchEventData = () => {
-    var requestOptions = {
-      method: 'GET',
-      redirect: 'follow'
-    };
-
-    fetch("http://127.0.0.1:5000/event/" + id, requestOptions)
-      .then(response => response.json())
-      .then(result => {
-        setEvent(result);
-        setDateAndTime(result);
-      })
-      .catch(error => console.log('error', error));
-  }
-
-  const saveEventChanges = () => {
-    
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Authorization", "Bearer " + localStorage.getItem('token'));
-
-    var raw = JSON.stringify({
-      "name": event['name'],
-      "description": event['description'],
-      "link": event['link'],
-      "begin": dateString + "T" + beginTimeString + ":00",
-      "end": dateString + "T" + endTimeString + ":00",
-    });
-
-    var requestOptions = {
-      method: 'PATCH',
-      headers: myHeaders,
-      body: raw,
-      redirect: 'follow'
-    };
-
-    fetch("http://127.0.0.1:5000/event/" + event['id'] + "?password=" + query.get('editCode'), requestOptions)
-      .then(response => response.text())
-      .then(result => console.log(result))
-      .catch(error => console.log('error', error));
-  }
-
   const setDateAndTime = (event) => {
     setDateString(new Date(event['begin']).toISOString().split('T')[0]);
     setBeginTimeString(
@@ -77,7 +42,7 @@ export function EventPage() {
   }
 
   useEffect(() => {
-    fetchEventData();
+    fetchEventData(id, setEvent, setDateAndTime);
   }, [])
 
   return (
@@ -150,7 +115,7 @@ export function EventPage() {
               disabled={disabled}
               onChange={(text) => { setEndTimeString(text.target.value); }} />
             <br /><br />
-            {!disabled && <input type="button" value="Save" onClick={() => saveEventChanges()} />}
+            {!disabled && <input type="button" value="Save" onClick={() => saveEventChanges(event, dateString, beginTimeString, endTimeString, query)} />}
           </form>
         </div>
       }
@@ -158,6 +123,12 @@ export function EventPage() {
   )
 }
 
+/**
+ * Fixes the minutes string by adding a leading zero if the minutes value is less than 10.
+ * 
+ * @param {number} minutes - The minutes value to be fixed.
+ * @returns {string} - The fixed minutes string.
+ */
 const fixMinutesString = (minutes) => {
   if (minutes < 10) {
     return '0' + minutes

@@ -3,7 +3,14 @@ import { useState } from 'react'
 import { useEffect } from 'react'
 
 import { EventItem } from '../Event/EventItem';
+import { fetchUserData, fetchUserEvents } from '../../functions/ApiUtils';
 
+/**
+ * Renders the user profile component.
+ *
+ * @param {Object} props - The component props.
+ * @returns {JSX.Element} The rendered user profile component.
+ */
 export function Profile(props) {
   const [currentUser, setCurrentUser] = useState();
   const [userEvents, setUserEvents] = useState();
@@ -30,36 +37,3 @@ export function Profile(props) {
     </>
   )
 }
-
-function fetchUserData(setCurrentUser) {
-  var requestOptions = {
-    method: 'GET',
-    headers: {
-      'Accept': 'application/json',
-      "Authorization": "Bearer " + localStorage.getItem('token')
-    },
-    redirect: 'follow'
-  };
-
-  fetch("http://127.0.0.1:5000/user", requestOptions)
-    .then(response => response.json())
-    .then(response => setCurrentUser(response))
-    .catch(error => console.log('error', error));
-}
-
-function fetchUserEvents(setUserEvents) {
-  var myHeaders = new Headers();
-  myHeaders.append("Authorization", "Bearer " + localStorage.getItem('token'));
-
-  var requestOptions = {
-    method: 'GET',
-    headers: myHeaders,
-    redirect: 'follow'
-  };
-
-  fetch("http://localhost:5000/user/events?limit=10", requestOptions)
-    .then(response => response.json())
-    .then(result => { console.log(result); setUserEvents(result); })
-    .catch(error => console.log('error', error));
-}
-

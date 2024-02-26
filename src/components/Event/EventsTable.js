@@ -4,10 +4,30 @@ import { EventItem } from "./EventItem";
 
 import "./EventsTable.css";
 
+/**
+ * Renders a table of events.
+ * 
+ * @param {Object} props - The component props.
+ * @param {Array} props.events - The array of events to display.
+ * @param {Object} props.day - The current day object.
+ * @param {number} props.day.year - The year of the current day.
+ * @param {number} props.day.month - The month of the current day.
+ * @param {number} props.day.day - The day of the current day.
+ * @param {Function} props.handleAddEvent - The function to handle adding an event.
+ * @returns {JSX.Element} The rendered EventsTable component.
+ */
 export function EventsTable(props) {
   const events = props['events']
   const currentDay = props['day']
 
+  const getMonthString = (month) => {
+    let array = ['January', 'February', 'March', 'April',
+      'May', 'June', 'July', 'August',
+      'September', 'October', 'November', 'December'];
+  
+    return array[month];
+  }
+  
   return (
     <div className="UpcomingEventsDiv">
       {currentDay['year'] === -1 ?
@@ -25,10 +45,4 @@ export function EventsTable(props) {
   )
 }
 
-const getMonthString = (month) => {
-  let array = ['January', 'February', 'March', 'April',
-    'May', 'June', 'July', 'August',
-    'September', 'October', 'November', 'December'];
 
-  return array[month];
-}

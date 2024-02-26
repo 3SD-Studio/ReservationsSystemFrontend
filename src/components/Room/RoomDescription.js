@@ -2,8 +2,20 @@ import React from "react";
 
 import "./RoomDescription.css";
 
+/**
+ * Renders the description of a room.
+ * 
+ * @param {Object} props - The props object containing the room data.
+ * @returns {JSX.Element} The rendered room description component.
+ */
 export function RoomDescription(props) {
     let room = props['children']
+
+    // set symbol (✓ or ✗)
+    const symbol = (bool) => {
+        return bool ? <b className="green">&#x2713;</b> : <b className="red">&#x2717;</b>
+    } 
+
     return (
         <div className="descritpionDiv">
             <h3 className="descriptionHeader">Description</h3>
@@ -20,11 +32,3 @@ export function RoomDescription(props) {
         </div>
     )
 }
-
-const symbol = (bool) => {
-    if (bool) {
-        return <b className="green">&#x2713;</b>
-    } else {
-        return <b className="red">&#x2717;</b>
-    }
-} 
