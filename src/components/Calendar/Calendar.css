@@ -1,67 +1,104 @@
+/* Apply background color to today's date with higher specificity */
 .today {
-    margin: auto;
-    background-color: #aaa;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
+    background-color: lightblue !important;
 }
 
+/* Remove hover effect on today's date */
 .today:hover {
-    background-color: #fff;
-    cursor: pointer;
+    background-color: lightblue !important;
 }
 
+/* Apply hover effect on calendar items */
 .calendarItem:hover {
-    background-color: #fff;
+    background-color: #f2f2f2; /* Changed to a lighter shade */
     cursor: pointer;
 }
 
+/* Simplify and improve styling for the calendar container */
 .calendarDiv {
-    display: inline-block;
-    width: 50%;
+    width: 50%; /* Removed display: inline-block; as it's not necessary */
     background-color: #fff;
     border-radius: 20px;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
     border: 2px solid #f2f2f2;
     padding: 20px;
     margin-bottom: 20px;
-    position: static;
-    overflow: hidden;
+    overflow: hidden; /* Removed position: static; */
 }
 
+/* Simplify and improve styling for the calendar header */
 .calendarHeader {
-    width: 100%;
     text-align: center;
-    margin-top: 0px;
+    margin-top: 0;
     margin-bottom: 15px;
     font-size: 32pt;
 }
 
+/* Simplify and improve styling for the calendar table */
 .calendarTable {
     width: 100%;
     border-collapse: collapse;
 }
 
-.calendarItem {
-    margin: auto;
-    background-color: #eeeeee;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    position: relative;
-}
-
-.calendarItem:hover {
-    background-color: #fff;
-}
-
-.calendarItemText{
-    text-align: center;
-    justify-content: center;
-    line-height: 100%;
+/* Simplify and improve styling for the month header */
+.month-header {
     display: flex;
-    padding-top: 30%;
-    font-size: 30px;
+    justify-content: space-between; /* Better alignment */
+    align-items: center; /* Better alignment */
+    margin-bottom: 15px; /* Moved margin from .calendarHeader */
+}
+
+.month-header h1 {
+    flex: 1; /* Take remaining space */
+    margin: 0; /* Removed width and margin */
+}
+
+.month-header button {
+    border: none; /* Better to reset border */
+    border-radius: 50%;
+    font-size: 30pt;
+    background-color: rgb(241, 237, 237);
+    cursor: pointer;
+    transition: background-color 0.1s, box-shadow 0.1s; /* Combined transitions */
+    box-shadow: 0 9px #999;
+    padding: 10px; /* Improved padding */
+}
+
+.month-header button:hover {
+    background-color: rgb(218, 218, 218);
+}
+
+.month-header button:active {
+    background-color: #949494;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+/* Simplify and improve styling for the calendar items */
+.calendar-item {
+    margin: 10px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    font-size: 30pt;
+    background-color: rgb(241, 237, 237);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.1s, box-shadow 0.1s; /* Combined transitions */
+    box-shadow: 0 9px #999;
+    text-align: center;
+    display: flex;
+    align-items: center; /* Better alignment */
+    justify-content: center; /* Better alignment */
     color: #333;
 }
 
+.calendar-item:hover {
+    background-color: rgb(218, 218, 218);
+}
+
+.calendar-item:active {
+    background-color: #949494;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}

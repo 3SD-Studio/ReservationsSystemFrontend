@@ -1,14 +1,12 @@
 /* Description Section */
 .project-description {
-    position: fixed;
+    position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
-    width: 100%;
     font-size: 18px;
     color: #333;
     background-color: rgb(233, 233, 233);
-    margin-bottom: 20px;
     padding-left: 5%;
     padding-right: 5%;
   }

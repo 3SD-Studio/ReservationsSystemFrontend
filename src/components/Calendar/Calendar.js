@@ -14,12 +14,19 @@ import { fetchEvents } from '../../functions/ApiUtils'
  * @returns {JSX.Element} Calendar component.
  */
 export function Calendar(props) {
-  const [month, setMonth] = useState(getMonthString(new Date().getMonth()))
   const [calendar, setCalendar] = useState([[{}]])
+  const [date, setDate] = useState(new Date())
 
   useEffect(() => {
-    setCalendar(generateCalendar(new Date().getFullYear(), new Date().getMonth()))
+    setCalendar(generateCalendar(date.getFullYear(), date.getMonth()))
   }, [])
+
+  const changeMonth = (difference) => {
+    const newDate = new Date(date) // Create a new date object
+    newDate.setMonth(newDate.getMonth() + difference) // Update the month
+    setDate(newDate)
+    setCalendar(generateCalendar(newDate.getFullYear(), newDate.getMonth()))
+  }
 
   if (calendar === undefined) {
     return <h1>LOADING</h1>
@@ -27,8 +34,11 @@ export function Calendar(props) {
   else
     return (
       <div className='calendarDiv'>
-        <h1>Calendar</h1>
-        <h2>{month}  {new Date().getFullYear()}</h2>
+        <div className="month-header">
+          <button onClick={() => {changeMonth(-1)}}>&lt;</button>
+          <h1>{getMonthString(date.getMonth())} {date.getFullYear()}</h1>
+          <button onClick={() => {changeMonth(+1)}}>&gt;</button>
+        </div>
         <table className="calendarTable">
           <tr>
             <th>MO</th>
@@ -43,14 +53,14 @@ export function Calendar(props) {
             <tr>
               {week.map((day) => (
                 <td >
-                  <div className={day.today ? "today" : "calendarItem"}
+                  <button className={day.today ? "calendar-item today" : "calendar-item"}
                     onClick={() => {
                       props['hadnleSetDay'](day)
                       fetchEvents(day, props['children'], props['handleSetEevent'])
                     }
                     }>
-                    <div className='calendarItemText'>{day.day}</div>
-                  </div>
+                    {day.day}
+                  </button>
                 </td>
               ))}
             </tr>
@@ -71,6 +81,8 @@ const getMonthString = (month) => {
     'May', 'June', 'July', 'August',
     'September', 'October', 'November', 'December'];
 
+    console.log(month)
+    console.log(array[month])
   return array[month];
 }
 
@@ -101,6 +113,7 @@ const generateCalendar = (year, month) => {
 
   let fixYear = month === 1 ? -1 : 0;
   for (let i = start; i <= daysInPreviousMonth; i++) {
+    if (!calendar[0]) calendar[0] = []; // Ensure array exists
     calendar[0].push(
       {
         day: i,
@@ -113,6 +126,7 @@ const generateCalendar = (year, month) => {
   }
 
   for (let i = 1; i <= daysInMonth; i++) {
+    if (!calendar[Math.floor(counter / 7)]) calendar[Math.floor(counter / 7)] = []; // Ensure array exists
     calendar[Math.floor(counter / 7)].push(
       {
         day: i,
@@ -126,6 +140,7 @@ const generateCalendar = (year, month) => {
 
   fixYear = month === 12 ? 1 : 0;
   for (let i = 1; counter < 35; i++) {
+    if (!calendar[Math.floor(counter / 7)]) calendar[Math.floor(counter / 7)] = []; // Ensure array exists
     calendar[Math.floor(counter / 7)].push(
       {
         day: i,
@@ -137,6 +152,3 @@ const generateCalendar = (year, month) => {
   }
   return calendar;
 }
-
-
-
