@@ -238,3 +238,26 @@ export function fetchEventData(id, setEvent, setDateAndTime) {
     })
     .catch(error => console.log('error', error));
 }
+
+
+/**
+ * Fetches the current user data from the server and updates the state with the user's first name.
+ *
+ * @param {function} setCurrentUser - The function to update the state with the user's first name.
+ */
+export function fetchCurrenUser(setCurrentUser) {
+  var requestOptions = {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      "Authorization": "Bearer " + localStorage.getItem('token')
+    },
+    redirect: 'follow'
+  }
+
+  fetch("http://127.0.0.1:5000/user", requestOptions)
+    .then(response => response.json())
+    .then(response => setCurrentUser(response['firstName']))
+    .catch(error => console.log('error', error))
+}
+

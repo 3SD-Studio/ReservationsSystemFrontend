@@ -1,0 +1,42 @@
+.RoomsListDiv {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+  
+  .RoomsListDiv h1 {
+    font-size: 24px;
+    color: #333;
+  }
+  
+  .roomTiles {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center the tiles */
+  }
+  
+  .roomTile {
+    width: calc(33.33% - 20px);
+    margin: 10px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .roomTile h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .roomTile p {
+    margin: 5px 0;
+  }
+  
+  .roomLink {
+    text-decoration: none;
+    color: #333;
+  }
+  
+  .roomLink:hover {
+    text-decoration: underline;
+  }

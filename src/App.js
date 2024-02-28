@@ -13,28 +13,13 @@ import { Logout } from './components/Login/Logout.js'
 import { Navbar } from './components/Navbar/Navbar.js';
 import { Profile } from './components/Profile/Profile.js';
 import { EventPage } from './components/Event/EventPage.js';
+import { fetchCurrenUser } from './functions/ApiUtils.js'
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState();
   
-  const fetchUserData = () => {
-    var requestOptions = {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        "Authorization": "Bearer " + localStorage.getItem('token')
-      },
-      redirect: 'follow'
-    }
-      
-    fetch("http://127.0.0.1:5000/user", requestOptions)
-    .then(response => response.json())
-    .then(response => setCurrentUser(response['firstName']))
-    .catch(error => console.log('error', error));
-  }
-
   useEffect(() => {
-    fetchUserData();
+    fetchCurrenUser(setCurrentUser)
   }, [])
 
   return (

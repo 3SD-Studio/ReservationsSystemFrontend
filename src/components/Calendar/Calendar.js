@@ -40,6 +40,7 @@ export function Calendar(props) {
           <button onClick={() => {changeMonth(+1)}}>&gt;</button>
         </div>
         <table className="calendarTable">
+          <tbody>
           <tr>
             <th>MO</th>
             <th>TU</th>
@@ -50,7 +51,7 @@ export function Calendar(props) {
             <th>SU</th>
           </tr>
           {calendar.map((week) => (
-            <tr>
+            <tr id={week.key}>
               {week.map((day) => (
                 <td >
                   <button className={day.today ? "calendar-item today" : "calendar-item"}
@@ -65,6 +66,7 @@ export function Calendar(props) {
               ))}
             </tr>
           ))}
+          </tbody>
         </table>
       </div>
     )
