@@ -38,7 +38,7 @@ export function RoomPage() {
             <h1>ROOM {room['name']}</h1>
             <div style={{display: "flex"}}>  
                 <RoomDescription>{room}</RoomDescription>
-                <Calendar hadnleSetDay={(day) => setCurrentDay(day)} handleSetEevent={(events) => setEvents(events)}>{room['id']}</Calendar>
+                <Calendar handleSetDay={(day) => setCurrentDay(day)} handleSetEevent={(events) => setEvents(events)}>{room['id']}</Calendar>
                 <EventsTable day={currentDay} events={events} handleAddEvent={() => {setEventPopupOpen(true);}}></EventsTable>
                 {eventPopupOpen && <EventPopup  handleClose={() => {setEventPopupOpen(false);}} roomId={id}>{currentDay}</EventPopup>}
             </div>

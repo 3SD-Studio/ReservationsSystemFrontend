@@ -41,7 +41,7 @@ export function Calendar(props) {
         </div>
         <table className="calendarTable">
           <tbody>
-          <tr>
+          <tr key={"header"}>
             <th>MO</th>
             <th>TU</th>
             <th>WE</th>
@@ -50,13 +50,13 @@ export function Calendar(props) {
             <th>SA</th>
             <th>SU</th>
           </tr>
-          {calendar.map((week) => (
-            <tr id={week.key}>
-              {week.map((day) => (
-                <td >
+          {calendar.map((week, weekId) => (
+            <tr key={`week-${weekId}`}>
+              {week.map((day, dayId) => (
+                <td key={`day-${dayId}`}>
                   <button className={day.today ? "calendar-item today" : "calendar-item"}
                     onClick={() => {
-                      props['hadnleSetDay'](day)
+                      props['handleSetDay'](day)
                       fetchEvents(day, props['children'], props['handleSetEevent'])
                     }
                     }>
@@ -78,14 +78,12 @@ export function Calendar(props) {
  * @param {number} month - Month number (0-indexed).
  * @returns {string} Month name.
  */
-const getMonthString = (month) => {
+export const getMonthString = (month) => {
   let array = ['January', 'February', 'March', 'April',
     'May', 'June', 'July', 'August',
     'September', 'October', 'November', 'December'];
 
-    console.log(month)
-    console.log(array[month])
-  return array[month];
+  return array[month >= 0 ? month % 12 : 12 + (month % 12)];
 }
 
 /**
@@ -95,13 +93,12 @@ const getMonthString = (month) => {
  * @param {number} month - Month (0-indexed).
  * @returns {Array<Array<Object>>} Generated calendar.
  */
-const generateCalendar = (year, month) => {
+export function generateCalendar(year, month) {
   let isCurrentMonth = (year === new Date().getFullYear() && month === new Date().getMonth());
   const fixSunday = (day) => {
     return day === 0 ? 7 : day;
   }
 
-  year = new Date().getFullYear();
   let firstDayOfMonth = fixSunday(new Date(year, month, 1).getDay());
   let daysInMonth = new Date(year, month + 1, 0).getDate();
   let daysInPreviousMonth = new Date(year, month, 0).getDate();
