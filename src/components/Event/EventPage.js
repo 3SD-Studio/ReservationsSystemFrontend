@@ -5,6 +5,8 @@ import { useParams, useLocation } from "react-router-dom";
 import { saveEventChanges } from "../../functions/ApiUtils";
 import { fetchEventData } from "../../functions/ApiUtils";
 
+import { fixMinutesString } from "../../functions/Tools";
+
 /**
  * Custom hook that parses the query parameters from the current URL.
  * 
@@ -123,16 +125,3 @@ export function EventPage() {
   )
 }
 
-/**
- * Fixes the minutes string by adding a leading zero if the minutes value is less than 10.
- * 
- * @param {number} minutes - The minutes value to be fixed.
- * @returns {string} - The fixed minutes string.
- */
-const fixMinutesString = (minutes) => {
-  if (minutes < 10) {
-    return '0' + minutes
-  } else {
-    return minutes
-  }
-}

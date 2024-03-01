@@ -1,6 +1,7 @@
 import React from 'react';
-
 import { useNavigate } from 'react-router-dom';
+
+import { fixMinutesString } from '../../functions/Tools';
 
 import './EventItem.css'
 
@@ -16,9 +17,9 @@ export function EventItem(props) {
   const navigate = useNavigate();
 
   return (
-    props['events'].map(event => {
+    props['events'].map((event, id) => {
       return (
-        <div className="grid-container eventDiv" onClick={() => navigate('/event/' + event['id'])}>
+        <div className="grid-container eventDiv" onClick={() => navigate('/event/' + event['id'])} data-testid="event-item" key={id}>
           <h4 className="item1 title">{event['name']}</h4>
           <h4 className="item2 date">{new Date(event['begin']).toLocaleDateString()}</h4>
           <p className="item3 description">{event['description']}</p>
@@ -37,16 +38,4 @@ export function EventItem(props) {
 }
 
 
-/**
- * Fixes the minutes string by adding a leading zero if the minutes value is less than 10.
- * 
- * @param {number} minutes - The minutes value to be fixed.
- * @returns {string} - The fixed minutes string.
- */
-const fixMinutesString = (minutes) => {
-  if (minutes < 10) {
-    return '0' + minutes
-  } else {
-    return minutes
-  }
-}
+
