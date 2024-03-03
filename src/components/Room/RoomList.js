@@ -15,7 +15,6 @@ export function RoomList() {
     fetchRoomsData(setRooms)
   }, [])
 
-
   return (
       <div className="RoomsListDiv">
         <h1>Choose room from list:</h1>

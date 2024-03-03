@@ -1,23 +1,20 @@
-import React, { useEffect } from "react"
+import { useEffect } from "react"
 import { useState } from "react";
 
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { saveEventChanges } from "../../functions/ApiUtils";
 import { fetchEventData } from "../../functions/ApiUtils";
 
 import { fixMinutesString } from "../../functions/Tools";
+import { useQuery } from "../../functions/Tools";
+
+import './EventPage.css'
 
 /**
- * Custom hook that parses the query parameters from the current URL.
+ * Renders the EventPage component.
  * 
- * @returns {URLSearchParams} The parsed query parameters.
+ * @returns {JSX.Element} The rendered EventPage component.
  */
-function useQuery() {
-  const { search } = useLocation();
-
-  return React.useMemo(() => new URLSearchParams(search), [search]);
-}
-
 export function EventPage() {
   let { id } = useParams();
   let query = useQuery();
@@ -53,9 +50,10 @@ export function EventPage() {
         <div>
           <h1>Event</h1>
           <form>
-            <label>Name</label>
+            <label htmlFor="name">Name</label>
             <br />
             <input
+              id="name"
               type="text"
               name="name"
               defaultValue={event['name']}
@@ -65,9 +63,10 @@ export function EventPage() {
                 setEvent(event);
               }} />
             <br /><br />
-            <label>Link</label>
+            <label htmlFor="link">Link</label>
             <br />
             <input
+              id="link"
               type="text"
               name="link"
               defaultValue={event['link']}
@@ -77,9 +76,10 @@ export function EventPage() {
                 setEvent(event);
               }} />
             <br /><br />
-            <label>Description</label>
+            <label htmlFor="description">Description</label>
             <br />
             <input
+              id="description"
               type="textarea"
               name="description"
               defaultValue={event['description']}
@@ -89,18 +89,20 @@ export function EventPage() {
                 setEvent(event);
               }} />
             <br /><br />
-            <label>Date</label>
+            <label htmlFor="date">Date</label>
             <br />
             <input
+              id="date"
               type="date"
               name="date"
               defaultValue={dateString}
               disabled={disabled}
               onChange={(text) => { setDateString(text.target.value); }} />
             <br /><br />
-            <label>Start</label>
+            <label htmlFor="start">Start</label>
             <br />
             <input
+              id="start"
               type="time"
               name="start"
               defaultValue={beginTimeString}
@@ -108,9 +110,10 @@ export function EventPage() {
               onChange={(text) => { setBeginTimeString(text.target.value); }}
             />
             <br /><br />
-            <label>End</label>
+            <label htmlFor="end">End</label>
             <br />
             <input
+              id="end"
               type="Time"
               name="end"
               defaultValue={endTimeString}
@@ -124,4 +127,3 @@ export function EventPage() {
     </>
   )
 }
-

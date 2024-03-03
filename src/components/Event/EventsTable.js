@@ -2,6 +2,8 @@ import React from "react";
 
 import { EventItem } from "./EventItem";
 
+import { getMonthString } from "../../functions/Tools";
+
 import "./EventsTable.css";
 
 /**
@@ -19,14 +21,6 @@ import "./EventsTable.css";
 export function EventsTable(props) {
   const events = props['events']
   const currentDay = props['day']
-
-  const getMonthString = (month) => {
-    let array = ['January', 'February', 'March', 'April',
-      'May', 'June', 'July', 'August',
-      'September', 'October', 'November', 'December'];
-  
-    return array[month];
-  }
   
   return (
     <div className="UpcomingEventsDiv">

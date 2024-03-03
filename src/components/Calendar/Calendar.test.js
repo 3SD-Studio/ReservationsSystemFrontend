@@ -1,5 +1,7 @@
 import { render, screen, fireEvent} from '@testing-library/react';
-import { Calendar, getMonthString, generateCalendar } from './Calendar';
+import { Calendar, generateCalendar } from './Calendar';
+
+import { getMonthString } from '../../functions/Tools';
 
 describe("Calendar tests", () => {
   test('returns correct month string', () => {

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 
 import './Calendar.css'
 import { fetchEvents } from '../../functions/ApiUtils'
+import { getMonthString } from '../../functions/Tools'
 
 /**
  * React component representing a calendar with events for current week, 
@@ -72,19 +73,6 @@ export function Calendar(props) {
     )
 }
 
-/**
- * Function maps index of month to its name.
- * 
- * @param {number} month - Month number (0-indexed).
- * @returns {string} Month name.
- */
-export const getMonthString = (month) => {
-  let array = ['January', 'February', 'March', 'April',
-    'May', 'June', 'July', 'August',
-    'September', 'October', 'November', 'December'];
-
-  return array[month >= 0 ? month % 12 : 12 + (month % 12)];
-}
 
 /**
  * Function to generate the calendar for a given year and month.
