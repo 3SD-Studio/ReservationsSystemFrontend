@@ -21,14 +21,18 @@ import "./EventsTable.css";
 export function EventsTable(props) {
   const events = props['events']
   const currentDay = props['day']
-  
+  const today = new Date();
+
   return (
     <div className="UpcomingEventsDiv">
       {currentDay['year'] === -1 ?
         <h3 id="eventsTableHeader">Upcoming events</h3> :
         <>
           <h3>{currentDay.day + ' ' + getMonthString(currentDay.month - 1) + ' ' + currentDay.year}</h3>
-          <button className="openEventAddPopup" onClick={() => { props['handleAddEvent'](); }}>Add</button>
+          <button className="openEventAddPopup" 
+          onClick={() => { props['handleAddEvent'](); }}
+          disabled={new Date(currentDay.year, currentDay.month - 1, currentDay.day + 1) < today}
+          >Add</button>
         </>
       }
       <hr></hr>

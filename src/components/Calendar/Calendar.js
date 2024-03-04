@@ -19,8 +19,8 @@ export function Calendar(props) {
   const [date, setDate] = useState(new Date())
 
   useEffect(() => {
-    setCalendar(generateCalendar(date.getFullYear(), date.getMonth()))
-  }, [])
+    setCalendar(generateCalendar(date.getFullYear(), date.getMonth()));
+  }, [date])
 
   const changeMonth = (difference) => {
     const newDate = new Date(date) // Create a new date object
