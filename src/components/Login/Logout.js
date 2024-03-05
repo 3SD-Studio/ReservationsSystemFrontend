@@ -1,10 +1,14 @@
 import React from 'react';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 
 import "./Login.css";
 
-
+/**
+ * Logout component.
+ * Removes token from local storage and redirects to the main page after a specified time.
+ *
+ * @returns {JSX.Element} The rendered Logout component.
+ */
 export function Logout() {
     localStorage.removeItem("token");
     const [timer, setTimer] = React.useState(5);
@@ -15,6 +19,7 @@ export function Logout() {
                 setTimer(timer - 1);
             }
             else {
+                window.location.reload(true);
                 window.location.href = '/rooms';
             }
         }, 1000)
@@ -28,7 +33,7 @@ export function Logout() {
             <h3>You have been logged out</h3>
             <h4>Redirecting to main page in {timer} seconds</h4>
             <div id="link">
-                <Link to="/login">Login</Link>
+                <a href="/login">Login</a>
             </div>
         </div>
     )

@@ -48,7 +48,8 @@ export function EventPage() {
     <>
       {event === undefined ? <h1>LOADING</h1> :
         <div>
-          <h1>Event</h1>
+          <h1 className="event-header">Event</h1>
+          <div className="event-form">
           <form>
             <label htmlFor="name">Name</label>
             <br />
@@ -122,6 +123,7 @@ export function EventPage() {
             <br /><br />
             {!disabled && <input type="button" value="Save" onClick={() => saveEventChanges(event, dateString, beginTimeString, endTimeString, query)} />}
           </form>
+          </div>
         </div>
       }
     </>

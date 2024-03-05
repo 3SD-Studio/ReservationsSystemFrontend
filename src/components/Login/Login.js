@@ -34,7 +34,6 @@ export function Login() {
           .then((text) => {
             let token = JSON.parse(text);
             localStorage.setItem('token', token['token']);
-            console.log(localStorage.getItem('token'));
           })
           window.location.href = '/rooms';
         }

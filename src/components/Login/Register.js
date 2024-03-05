@@ -43,7 +43,6 @@ export function Register() {
         }
       })
       .catch(error => console.log('error', error));
-
   }
 
   return (

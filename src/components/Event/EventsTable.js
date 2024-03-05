@@ -24,7 +24,7 @@ export function EventsTable(props) {
   const today = new Date();
 
   return (
-    <div className="UpcomingEventsDiv">
+    <div className="upcoming-events-div">
       {currentDay['year'] === -1 ?
         <h3 id="eventsTableHeader">Upcoming events</h3> :
         <>

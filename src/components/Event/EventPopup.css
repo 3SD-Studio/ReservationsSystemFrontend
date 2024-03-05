@@ -58,18 +58,6 @@
     cursor: pointer;
 }
 
-/* Style for Cancel button */
-.popupForeground button:first-child {
-    background-color: #ccc;
-    color: #fff;
-}
-
-/* Style for Add event button */
-.popupForeground button:last-child {
-    background-color: #007bff;
-    color: #fff;
-}
-
 .buttonContainer {
     width: 30%;
     margin-left: 35%;
@@ -89,3 +77,25 @@
     padding: 10px;
     text-align: center;
   }
+
+.save-event-button{
+    background-color:dodgerblue;
+    color: #ccc;
+}
+
+.save-event-button:not([disabled]):hover {
+    background-color: blue;
+}
+
+.save-event-button:not([disabled]):active {
+    background-color: aqua;
+}
+
+.save-event-button:not([disabled])::after {
+    background-color: dodgerblue;
+}
+
+.save-event-button:disabled {
+    background-color: gray;
+}
+

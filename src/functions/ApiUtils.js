@@ -83,7 +83,6 @@ export function fetchUpcomingEvents(id, setEvents) {
   fetch("http://127.0.0.1:5000/room/" + id + "/events?limit=10", requestOptions)
     .then(response => response.text())
     .then(result => {
-      console.log(result);
       setEvents(JSON.parse(result));
     })
     .catch(error => console.log('error', error));
@@ -143,7 +142,7 @@ export function fetchUserEvents(setUserEvents) {
  * @param {function} setEventData - A function to set the event data.
  * @param {object} props - The props object containing additional data.
  */
-export function postEvent(setEventCreated, setEventData, props) {
+export function postEvent(setEventCreated, setEventData, props, roomId) {
   const createDateTime = (date, time) => {
     return date['year'] + "-" + date['month'] + "-" + date['day'] + "T" + time + ":00"
   }
@@ -159,7 +158,7 @@ export function postEvent(setEventCreated, setEventData, props) {
     "begin": createDateTime(props['children'], document.getElementById('startTime').value),
     "end": createDateTime(props['children'], document.getElementById('endTime').value),
     "roomsId": [
-      parseInt(props['roomId'])
+      parseInt(roomId)
     ]
   });
 
@@ -173,7 +172,6 @@ export function postEvent(setEventCreated, setEventData, props) {
   fetch("http://127.0.0.1:5000/event", requestOptions)
     .then(response => response.json())
     .then(result => {
-      console.log(result);
       setEventCreated(true);
       setEventData(result);
     })
@@ -211,8 +209,6 @@ export function saveEventChanges(event, dateString, beginTimeString, endTimeStri
   };
 
   fetch("http://127.0.0.1:5000/event/" + event['id'] + "?password=" + query.get('editCode'), requestOptions)
-    .then(response => response.text())
-    .then(result => console.log(result))
     .catch(error => console.log('error', error));
 }
 

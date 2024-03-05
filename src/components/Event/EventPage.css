@@ -1,15 +1,9 @@
-.container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-h1 {
+.event-header {
   font-size: 24px;
   margin-bottom: 15px;
 }
 
-form {
+.event-form {
   margin: auto;
   padding: 2%;
   margin-top: 20px;
@@ -26,7 +20,7 @@ input[type="text"],
 input[type="textarea"],
 input[type="date"],
 input[type="time"] {
-  width: calc(100% - 20px); /* Adjusted width to accommodate padding */
+  width: calc(100% - 20px);
   padding: 8px;
   margin-bottom: 5px;
 }
@@ -43,11 +37,9 @@ input[type="button"] {
 }
 
 input[type="button"]:hover {
-  background-color: #0056b3;
-  
+  background-color: #385574;
 }
 
-h1.loading {
-  text-align: center;
-  margin-top: 50px;
+input[type="button"]:active {
+  background-color: aqua;
 }
