@@ -37,12 +37,12 @@ export function EventPopup(props) {
  * @param {Object} props - The props passed to the component.
  * @returns {JSX.Element} - The rendered event information popup.
  */
-function EventInfo(props) {
+export function EventInfo(props) {
   return <>
     <div>
       <h3>Event created!</h3>
-      <div class="grid">
-        <div class="cell">
+      <div className="grid">
+        <div className="cell">
           <h4>Link to view:</h4>
           <QRCode value={"http://127.0.0.1:3000/event/" + props['eventData'].id}/>
           <br /><br />
@@ -50,7 +50,7 @@ function EventInfo(props) {
           <br /><br />
           <button>Save as JPG</button>
         </div>
-        <div class="cell">
+        <div className="cell">
           <h4>Link to edit:</h4>
           <QRCode value={"http://127.0.0.1:3000/event/" + props['eventData'].id + "?editCode=" + props['eventData'].password} />
           <br />
@@ -75,7 +75,7 @@ function EventInfo(props) {
  * @param {Object} props - The component props.
  * @returns {JSX.Element} The CreateEvent component.
  */
-function CreateEvent(props) {
+export function CreateEvent(props) {
   const [start, setStart] = useState()
   const [end, setEnd] = useState()
 
@@ -83,29 +83,29 @@ function CreateEvent(props) {
     <div className="popupContent">
       <h3>Add event on {props['children']['day'] + "/" + props['children']['month'] + "/" + props['children']['year']}</h3>
       <form className="popupForm">
-        <label for="name">Name:</label>
+        <label htmlFor="name">Name:</label>
         <br />
         <input type="text" id='name' />
         <br /><br />
 
-        <label for="description">Description:</label>
+        <label htmlFor="description">Description:</label>
         <br />
         <textarea id="description" rows="4" cols="50"></textarea>
         <br /><br />
 
-        <label for="link">Link:</label>
+        <label htmlFor="link">Link:</label>
         <br />
         <input type="text" id='link' />
         <br /><br />
 
-        <label for="startTime">Start:</label>
+        <label htmlFor="startTime">Start:</label>
         <br />
         <input type="time" id='startTime' onChange={(event) => {
           setStart(event.target.value)
         }}/>
         <br /><br />
 
-        <label for="endTime">End:</label>
+        <label htmlFor="endTime">End:</label>
         <br />
         <input type="time" id='endTime' onChange={(event) => {
           setEnd(event.target.value)
