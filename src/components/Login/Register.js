@@ -1,10 +1,8 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
 import "./Login.css";
 
 export function Register() {
-  const navigate = useNavigate();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [firstName, setFirstName] = React.useState("");
@@ -36,7 +34,11 @@ export function Register() {
     fetch("http://127.0.0.1:5000/register", requestOptions)
       .then(response => {
         if (response.status === 200) {
-          navigate('/rooms');
+          response.json().then((responseJson) => {
+            localStorage.setItem('token', responseJson['token'])
+            window.location.reload(true);
+            window.location.href = '/rooms';
+          })
         }
         else {
           alert("Email already in use or invalid, please try again");

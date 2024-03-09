@@ -13,13 +13,13 @@ import { Logout } from './components/Login/Logout.js'
 import { Navbar } from './components/Navbar/Navbar.js';
 import { Profile } from './components/Profile/Profile.js';
 import { EventPage } from './components/Event/EventPage.js';
-import { fetchCurrenUser } from './functions/ApiUtils.js'
+import { fetchCurrentUser } from './functions/ApiUtils.js'
 
 export default function App() {
   const [currentUser, setCurrentUser] = useState();
   
   useEffect(() => {
-    fetchCurrenUser(setCurrentUser)
+    fetchCurrentUser(setCurrentUser)
   }, [])
 
   return (

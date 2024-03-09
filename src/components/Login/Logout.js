@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect } from 'react';
 
 import "./Login.css";
+import { logout } from '../../functions/ApiUtils';
 
 /**
  * Logout component.
@@ -10,10 +11,12 @@ import "./Login.css";
  * @returns {JSX.Element} The rendered Logout component.
  */
 export function Logout() {
+    const token = localStorage.getItem("token")
     localStorage.removeItem("token");
     const [timer, setTimer] = React.useState(5);
 
     const startTimer = (timer) => {
+        logout(token)
         setTimeout(() => {
             if (timer > 0) {
                 setTimer(timer - 1);

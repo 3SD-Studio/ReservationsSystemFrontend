@@ -1,3 +1,5 @@
+const URL = "http://127.0.0.1:5000/";
+
 /**
  * Function to fetch events for a specific day and update the state.
  * 
@@ -5,13 +7,13 @@
  * @param {string} roomId - Room ID for fetching events.
  * @param {Function} handleSetEvent - Function to handle setting fetched events.
  */
-export function fetchEvents(day, roomId, handleSetEevent) {
+export function fetchEvents(day, roomId, handleSetEvent) {
   var requestOptions = {
     method: 'GET',
     redirect: 'follow'
   }
 
-  fetch("http://127.0.0.1:5000/room/" + roomId +
+  fetch(URL + "/room/" + roomId +
     "/events?day=" + day['day'] +
     "&month=" + day['month'] +
     "&year=" + day['year'],
@@ -19,7 +21,7 @@ export function fetchEvents(day, roomId, handleSetEevent) {
     .then(response => response.text())
     .then(result => {
       result = JSON.parse(result)
-      handleSetEevent(result);
+      handleSetEvent(result);
     })
     .catch(error => console.log('error', error))
 }
@@ -37,7 +39,7 @@ export function fetchRoomsData(setRooms) {
     },
   };
 
-  fetch("http://127.0.0.1:5000/rooms", requestOptions)
+  fetch(URL + "/rooms", requestOptions)
     .then(response => response.json())
     .then(response => setRooms(response))
     .catch(error => console.log('error', error));
@@ -59,7 +61,7 @@ export function fetchRoomData(id, setRoom) {
     redirect: 'follow'
   };
 
-  fetch("http://127.0.0.1:5000/room/" + id, requestOptions)
+  fetch(URL + "/room/" + id, requestOptions)
     .then(response => response.json())
     .then(response => setRoom(response))
     .catch(error => console.log('error', error));
@@ -80,7 +82,7 @@ export function fetchUpcomingEvents(id, setEvents) {
     redirect: 'follow'
   };
 
-  fetch("http://127.0.0.1:5000/room/" + id + "/events?limit=10", requestOptions)
+  fetch(URL + "/room/" + id + "/events?limit=10", requestOptions)
     .then(response => response.text())
     .then(result => {
       setEvents(JSON.parse(result));
@@ -106,7 +108,7 @@ export function fetchUserData(setCurrentUser) {
     redirect: 'follow'
   };
 
-  fetch("http://127.0.0.1:5000/user", requestOptions)
+  fetch(URL + "/user", requestOptions)
     .then(response => response.json())
     .then(response => setCurrentUser(response))
     .catch(error => console.log('error', error));
@@ -128,9 +130,9 @@ export function fetchUserEvents(setUserEvents) {
     redirect: 'follow'
   };
 
-  fetch("http://localhost:5000/user/events?limit=10", requestOptions)
+  fetch(URL + "/user/events?limit=10", requestOptions)
     .then(response => response.json())
-    .then(result => { console.log(result); setUserEvents(result); })
+    .then(result => setUserEvents(result))
     .catch(error => console.log('error', error));
 }
 
@@ -169,7 +171,7 @@ export function postEvent(setEventCreated, setEventData, props, roomId) {
     redirect: 'follow'
   };
 
-  fetch("http://127.0.0.1:5000/event", requestOptions)
+  fetch(URL + "/event", requestOptions)
     .then(response => response.json())
     .then(result => {
       setEventCreated(true);
@@ -208,7 +210,7 @@ export function saveEventChanges(event, dateString, beginTimeString, endTimeStri
     redirect: 'follow'
   };
 
-  fetch("http://127.0.0.1:5000/event/" + event['id'] + "?password=" + query.get('editCode'), requestOptions)
+  fetch(URL + "/event/" + event['id'] + "?password=" + query.get('editCode'), requestOptions)
     .catch(error => console.log('error', error));
 }
 
@@ -226,7 +228,7 @@ export function fetchEventData(id, setEvent, setDateAndTime) {
     redirect: 'follow'
   };
 
-  fetch("http://127.0.0.1:5000/event/" + id, requestOptions)
+  fetch(URL + "/event/" + id, requestOptions)
     .then(response => response.json())
     .then(result => {
       setEvent(result);
@@ -235,13 +237,12 @@ export function fetchEventData(id, setEvent, setDateAndTime) {
     .catch(error => console.log('error', error));
 }
 
-
 /**
  * Fetches the current user data from the server and updates the state with the user's first name.
  *
  * @param {function} setCurrentUser - The function to update the state with the user's first name.
  */
-export function fetchCurrenUser(setCurrentUser) {
+export function fetchCurrentUser(setCurrentUser) {
   var requestOptions = {
     method: 'GET',
     headers: {
@@ -251,9 +252,30 @@ export function fetchCurrenUser(setCurrentUser) {
     redirect: 'follow'
   }
 
-  fetch("http://127.0.0.1:5000/user", requestOptions)
+  fetch(URL + "/user", requestOptions)
     .then(response => response.json())
     .then(response => setCurrentUser(response['firstName']))
     .catch(error => console.log('error', error))
 }
 
+
+/**
+ * Logs out the user by sending a GET request to the logout endpoint.
+ * 
+ * @param {string} token - The user's authentication token.
+ */
+export function logout(token) {
+  const myHeaders = new Headers();
+  myHeaders.append("Authorization", "Bearer " + token);
+
+  const requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow"
+  };
+
+  fetch(URL + "/logout", requestOptions)
+    .then((response) => response.text())
+    .then((result) => console.log(result))
+    .catch((error) => console.error(error));
+}
