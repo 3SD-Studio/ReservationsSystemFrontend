@@ -1,29 +1,168 @@
 const URL = "http://127.0.0.1:5000/";
 
 /**
+ * Represents a RequestObject used for making API requests.
+ */
+class Request {
+  #endpoint
+  #requestOptions
+  #setHandler
+  #errorHandler
+
+  /**
+   * Creates a new RequestObject.
+   * @param {string} endpoint - The API endpoint.
+   * @param {string} [method="GET"] - The HTTP method.
+   * @param {Object} [body={}] - The request body.
+   * @param {Function} [setHandler=(request) => {}] - The success handler function.
+   * @param {Function} [errorHandler=(error) => console.log('error', error)] - The error handler function.
+   */
+  constructor(endpoint,
+    method = "GET",
+    body = {},
+    setHandler = (request) => { },
+    errorHandler = (error) => console.log('error', error)) {
+    this.#endpoint = endpoint
+
+    const headers = new Headers()
+    headers.append('Accept', 'application/json')
+    headers.append('Content-Type', 'application/json')
+
+
+    this.#requestOptions = {
+      method: method,
+      headers: headers,
+      redirect: "follow"
+    }
+
+    if (method !== 'GET') {
+      this.#requestOptions.body = body
+    }
+
+    this.#setHandler = setHandler
+    this.#errorHandler = errorHandler
+  }
+
+  /**
+   * Adds authorization token to the request headers.
+   * @param {string} token - The authorization token.
+   */
+  addAuth(token) {
+    this.#requestOptions.headers.append("Authorization", "Bearer " + token)
+  }
+
+  /**
+   * Sets the request headers.
+   * @param {Object} headers - The request headers.
+   */
+  set headers(headers) {
+    this.#requestOptions.headers = headers
+  }
+
+  /**
+   * Sets the request body.
+   * @param {Object} body - The request body.
+   */
+  set body(body) {
+    this.#requestOptions.body = body
+  }
+
+  /**
+   * Sets the HTTP method.
+   * @param {string} method - The HTTP method.
+   */
+  set method(method) {
+    this.#requestOptions.method = method
+  }
+
+  /**
+   * Gets the request options.
+   * @returns {Object} - The request options.
+   */
+  get requestOptions() {
+    return this.#requestOptions
+  }
+
+  /**
+   * Gets the API endpoint.
+   * @returns {string} - The API endpoint.
+   */
+  get endpoint() {
+    return this.#endpoint
+  }
+
+  /**
+   * Sets the API endpoint.
+   * @param {string} endpoint - The API endpoint.
+   */
+  set endpoint(endpoint) {
+    this.#endpoint = endpoint
+  }
+
+  /**
+   * Gets the success handler function.
+   * @returns {Function} - The success handler function.
+   */
+  get setHandler() {
+    return this.#setHandler
+  }
+
+  /**
+   * Sets the success handler function.
+   * @param {Function} setHandler - The success handler function.
+   */
+  set setHandler(setHandler) {
+    this.#setHandler = setHandler
+  }
+
+  /**
+   * Gets the error handler function.
+   * @returns {Function} - The error handler function.
+   */
+  get errorHandler() {
+    return this.#errorHandler
+  }
+
+  /**
+   * Sets the error handler function.
+   * @param {Function} errorHandler - The error handler function.
+   */
+  set errorHandler(errorHandler) {
+    this.#errorHandler = errorHandler
+  }
+}
+
+/**
+ * Fetches data from the API using the provided request object.
+ *
+ * @param {Request} requestObject - The request object containing the necessary information for the API call.
+ */
+function fetchFromApi(requestObject) {
+  const requestOptions = requestObject.requestOptions
+
+  fetch(URL + requestObject.endpoint, requestOptions)
+    .then((response) => response.json())
+    .then((responseJSON) => requestObject.setHandler(responseJSON))
+    .catch((error) => requestObject.errorHandler(error))
+}
+
+/**
  * Function to fetch events for a specific day and update the state.
- * 
+ *
  * @param {Object} day - Selected day object.
  * @param {string} roomId - Room ID for fetching events.
  * @param {Function} handleSetEvent - Function to handle setting fetched events.
  */
 export function fetchEvents(day, roomId, handleSetEvent) {
-  var requestOptions = {
-    method: 'GET',
-    redirect: 'follow'
-  }
-
-  fetch(URL + "/room/" + roomId +
+  const endpoint = "/room/" + roomId +
     "/events?day=" + day['day'] +
     "&month=" + day['month'] +
-    "&year=" + day['year'],
-    requestOptions)
-    .then(response => response.text())
-    .then(result => {
-      result = JSON.parse(result)
-      handleSetEvent(result);
-    })
-    .catch(error => console.log('error', error))
+    "&year=" + day['year']
+
+  const requestObject = new Request(endpoint)
+  requestObject.setHandler = (response) => handleSetEvent(response)
+
+  fetchFromApi(requestObject)
 }
 
 
@@ -32,17 +171,10 @@ export function fetchEvents(day, roomId, handleSetEvent) {
  * @param {function} setRooms - The state setter function for rooms.
  */
 export function fetchRoomsData(setRooms) {
-  var requestOptions = {
-    method: 'GET',
-    headers: {
-      'Accept': 'application/json'
-    },
-  };
+  const requestObject = new Request("/rooms")
+  requestObject.setHandler = (response) => setRooms(response)
 
-  fetch(URL + "/rooms", requestOptions)
-    .then(response => response.json())
-    .then(response => setRooms(response))
-    .catch(error => console.log('error', error));
+  fetchFromApi(requestObject)
 }
 
 
@@ -53,18 +185,10 @@ export function fetchRoomsData(setRooms) {
  * @param {Function} setRoom - The function to update the room state.
  */
 export function fetchRoomData(id, setRoom) {
-  var requestOptions = {
-    method: 'GET',
-    headers: {
-      'Accept': 'application/json'
-    },
-    redirect: 'follow'
-  };
+  const requestObject = new Request("/room/" + id)
+  requestObject.setHandler = (response) => setRoom(response)
 
-  fetch(URL + "/room/" + id, requestOptions)
-    .then(response => response.json())
-    .then(response => setRoom(response))
-    .catch(error => console.log('error', error));
+  fetchFromApi(requestObject)
 }
 
 
@@ -76,20 +200,10 @@ export function fetchRoomData(id, setRoom) {
  * @returns {Array} - An empty array.
  */
 export function fetchUpcomingEvents(id, setEvents) {
-  let resultArray = [];
-  var requestOptions = {
-    method: 'GET',
-    redirect: 'follow'
-  };
+  const requestObject = new Request("/room/" + id + "/events?limit=10")
+  requestObject.setHandler = (response) => setEvents(response)
 
-  fetch(URL + "/room/" + id + "/events?limit=10", requestOptions)
-    .then(response => response.text())
-    .then(result => {
-      setEvents(JSON.parse(result));
-    })
-    .catch(error => console.log('error', error));
-
-  return resultArray;
+  fetchFromApi(requestObject)
 }
 
 
@@ -99,19 +213,11 @@ export function fetchUpcomingEvents(id, setEvents) {
  * @param {function} setCurrentUser - The function to update the current user state.
  */
 export function fetchUserData(setCurrentUser) {
-  var requestOptions = {
-    method: 'GET',
-    headers: {
-      'Accept': 'application/json',
-      "Authorization": "Bearer " + localStorage.getItem('token')
-    },
-    redirect: 'follow'
-  };
+  const requestObject = new Request("/user")
+  requestObject.setHandler = (response) => setCurrentUser(response)
+  requestObject.addAuth(localStorage.getItem('token'))
 
-  fetch(URL + "/user", requestOptions)
-    .then(response => response.json())
-    .then(response => setCurrentUser(response))
-    .catch(error => console.log('error', error));
+  fetchFromApi(requestObject)
 }
 
 
@@ -121,19 +227,11 @@ export function fetchUserData(setCurrentUser) {
  * @param {Function} setUserEvents - A function to set the user events data.
  */
 export function fetchUserEvents(setUserEvents) {
-  var myHeaders = new Headers();
-  myHeaders.append("Authorization", "Bearer " + localStorage.getItem('token'));
+  const requestObject = new Request("/user/events?limit=10")
+  requestObject.setHandler = (response) => setUserEvents(response)
+  requestObject.addAuth(localStorage.getItem('token'))
 
-  var requestOptions = {
-    method: 'GET',
-    headers: myHeaders,
-    redirect: 'follow'
-  };
-
-  fetch(URL + "/user/events?limit=10", requestOptions)
-    .then(response => response.json())
-    .then(result => setUserEvents(result))
-    .catch(error => console.log('error', error));
+  fetchFromApi(requestObject)
 }
 
 
@@ -183,7 +281,7 @@ export function postEvent(setEventCreated, setEventData, props, roomId) {
 
 /**
  * Saves the changes made to an event.
- * 
+ *
  * @param {Object} event - The event object containing the changes.
  * @param {string} dateString - The date string in the format "YYYY-MM-DD".
  * @param {string} beginTimeString - The begin time string in the format "HH:MM".
@@ -223,18 +321,13 @@ export function saveEventChanges(event, dateString, beginTimeString, endTimeStri
  * @param {function} setDateAndTime - The function to set the date and time data.
  */
 export function fetchEventData(id, setEvent, setDateAndTime) {
-  var requestOptions = {
-    method: 'GET',
-    redirect: 'follow'
-  };
+  const requestObject = new Request("/event/" + id)
+  requestObject.setHandler = (response) => {
+    setEvent(response);
+    setDateAndTime(response)
+  }
 
-  fetch(URL + "/event/" + id, requestOptions)
-    .then(response => response.json())
-    .then(result => {
-      setEvent(result);
-      setDateAndTime(result);
-    })
-    .catch(error => console.log('error', error));
+  fetchFromApi(requestObject)
 }
 
 /**
@@ -242,40 +335,25 @@ export function fetchEventData(id, setEvent, setDateAndTime) {
  *
  * @param {function} setCurrentUser - The function to update the state with the user's first name.
  */
-export function fetchCurrentUser(setCurrentUser) {
-  var requestOptions = {
-    method: 'GET',
-    headers: {
-      'Accept': 'application/json',
-      "Authorization": "Bearer " + localStorage.getItem('token')
-    },
-    redirect: 'follow'
-  }
+export function fetchCurrentUsername(setCurrentUser) {
+  const requestObject = new Request("/user")
+  requestObject.setHandler = (response) => setCurrentUser(response['firstName'])
+  requestObject.addAuth(localStorage.getItem('token'))
 
-  fetch(URL + "/user", requestOptions)
-    .then(response => response.json())
-    .then(response => setCurrentUser(response['firstName']))
-    .catch(error => console.log('error', error))
+  fetchFromApi(requestObject)
 }
 
 
 /**
  * Logs out the user by sending a GET request to the logout endpoint.
- * 
+ *
  * @param {string} token - The user's authentication token.
  */
 export function logout(token) {
-  const myHeaders = new Headers();
-  myHeaders.append("Authorization", "Bearer " + token);
+  const requestObject = new Request('/logout')
+  requestObject.addAuth(token)
+  requestObject.setHandler = (response) => { console.log(response) }
 
-  const requestOptions = {
-    method: "GET",
-    headers: myHeaders,
-    redirect: "follow"
-  };
-
-  fetch(URL + "/logout", requestOptions)
-    .then((response) => response.text())
-    .then((result) => console.log(result))
-    .catch((error) => console.error(error));
+  fetchFromApi(requestObject)
 }
+

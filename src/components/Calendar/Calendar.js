@@ -58,7 +58,7 @@ export function Calendar(props) {
                   <button className={day.today ? "calendar-item today" : "calendar-item"}
                     onClick={() => {
                       props['handleSetDay'](day)
-                      fetchEvents(day, props['children'], props['handleSetEevent'])
+                      fetchEvents(day, props['children'], props['handleSetEvent'])
                     }
                     }>
                     {day.day}

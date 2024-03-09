@@ -16,7 +16,6 @@ export function Logout() {
     const [timer, setTimer] = React.useState(5);
 
     const startTimer = (timer) => {
-        logout(token)
         setTimeout(() => {
             if (timer > 0) {
                 setTimer(timer - 1);
@@ -27,6 +26,10 @@ export function Logout() {
             }
         }, 1000)
     }
+    useEffect(() => {
+        logout(token);
+    }, [])
+
     useEffect(() => {
         startTimer(timer);
     })
