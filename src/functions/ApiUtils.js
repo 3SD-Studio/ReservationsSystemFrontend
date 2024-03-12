@@ -240,42 +240,15 @@ export function fetchUserEvents(setUserEvents) {
  *
  * @param {function} setEventCreated - A function to set the event creation status.
  * @param {function} setEventData - A function to set the event data.
- * @param {object} props - The props object containing additional data.
+ * @param {object} form - Object containing event data (Request body).
  */
-export function postEvent(setEventCreated, setEventData, props, roomId) {
-  const createDateTime = (date, time) => {
-    return date['year'] + "-" + date['month'] + "-" + date['day'] + "T" + time + ":00"
-  }
-
-  var myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  myHeaders.append("Authorization", "Bearer " + localStorage.getItem('token'));
-
-  var raw = JSON.stringify({
-    "name": document.getElementById('name').value,
-    "description": document.getElementById('description').value,
-    "link": document.getElementById('link').value,
-    "begin": createDateTime(props['children'], document.getElementById('startTime').value),
-    "end": createDateTime(props['children'], document.getElementById('endTime').value),
-    "roomsId": [
-      parseInt(roomId)
-    ]
-  });
-
-  var requestOptions = {
-    method: 'POST',
-    headers: myHeaders,
-    body: raw,
-    redirect: 'follow'
-  };
-
-  fetch(URL + "/event", requestOptions)
-    .then(response => response.json())
-    .then(result => {
-      setEventCreated(true);
-      setEventData(result);
-    })
-    .catch(error => console.log('error', error));
+export function postEvent(setEventCreated, setEventData, form) {
+  const requestObject = new Request("/event", "POST", JSON.stringify(form), (result) => {
+    setEventCreated(true);
+    setEventData(result);
+  })
+  requestObject.addAuth(localStorage.getItem('token'))
+  fetchFromApi(requestObject)
 }
 
 
@@ -288,28 +261,13 @@ export function postEvent(setEventCreated, setEventData, props, roomId) {
  * @param {string} endTimeString - The end time string in the format "HH:MM".
  * @param {URLSearchParams} query - The query parameters object containing the edit code.
  */
-export function saveEventChanges(event, dateString, beginTimeString, endTimeString, query) {
-  var myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  myHeaders.append("Authorization", "Bearer " + localStorage.getItem('token'));
+export function saveEventChanges(eventId, form, query) {
+  const requestObject = new Request("/event/" + eventId + "?password=" + query.get('editCode'))
+  requestObject.method = "PATCH";
+  requestObject.addAuth(localStorage.getItem('token'));
+  requestObject.body = JSON.stringify(form);
 
-  var raw = JSON.stringify({
-    "name": event['name'],
-    "description": event['description'],
-    "link": event['link'],
-    "begin": dateString + "T" + beginTimeString + ":00",
-    "end": dateString + "T" + endTimeString + ":00",
-  });
-
-  var requestOptions = {
-    method: 'PATCH',
-    headers: myHeaders,
-    body: raw,
-    redirect: 'follow'
-  };
-
-  fetch(URL + "/event/" + event['id'] + "?password=" + query.get('editCode'), requestOptions)
-    .catch(error => console.log('error', error));
+  fetchFromApi(requestObject);
 }
 
 

@@ -121,7 +121,16 @@ export function EventPage() {
               disabled={disabled}
               onChange={(text) => { setEndTimeString(text.target.value); }} />
             <br /><br />
-            {!disabled && <input type="button" value="Save" onClick={() => saveEventChanges(event, dateString, beginTimeString, endTimeString, query)} />}
+            {!disabled && <input type="button" value="Save" onClick={() => {
+               var form = {
+                "name": event['name'],
+                "description": event['description'],
+                "link": event['link'],
+                "begin": dateString + "T" + beginTimeString + ":00",
+                "end": dateString + "T" + endTimeString + ":00",
+              };
+              saveEventChanges(event['id'], form, query)}
+             } />}
           </form>
           </div>
         </div>

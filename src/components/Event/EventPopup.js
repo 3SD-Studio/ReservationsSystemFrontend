@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import QRCode from "react-qr-code";
 
@@ -76,8 +76,32 @@ export function EventInfo(props) {
  * @returns {JSX.Element} The CreateEvent component.
  */
 export function CreateEvent(props) {
+  const createDateTime = (date, time) => {
+    return date['year'] + "-" + date['month'] + "-" + date['day'] + "T" + time + ":00"
+  }
+
   const [start, setStart] = useState()
   const [end, setEnd] = useState()
+  const [name, setName] = useState()
+  const [description, setDescription] = useState()
+  const [link, setLink] = useState()
+  const [invalidForm, setInvalidForm] = useState(true)
+  const roomId = props['roomId']
+  
+  const form = {
+    name: name, 
+    description: description,
+    link: link, 
+    begin: createDateTime(props['children'], start), 
+    end: createDateTime(props['children'], end),
+    roomsId: roomId
+  }
+
+  const verifyArray = [name, description, link, start, end]
+  
+  useEffect(() => {
+    setInvalidForm(!verifyArray.every(item => item !== undefined && item !== ""));
+  }, [verifyArray]);
 
   return <>
     <div className="popupContent">
@@ -85,17 +109,23 @@ export function CreateEvent(props) {
       <form className="popupForm">
         <label htmlFor="name">Name:</label>
         <br />
-        <input type="text" id='name' />
+        <input type="text" id='name' onChange={(event) => {
+          setName(event.target.value)
+        }} />
         <br /><br />
 
         <label htmlFor="description">Description:</label>
         <br />
-        <textarea id="description" rows="4" cols="50"></textarea>
+        <textarea id="description" rows="4" cols="50" onChange={(event) => {
+          setDescription(event.target.value)
+        }}></textarea>
         <br /><br />
 
         <label htmlFor="link">Link:</label>
         <br />
-        <input type="text" id='link' />
+        <input type="text" id='link' onChange={(event) => {
+          setLink(event.target.value)
+        }}/>
         <br /><br />
 
         <label htmlFor="startTime">Start:</label>
@@ -114,16 +144,15 @@ export function CreateEvent(props) {
 
       </form>
       <div className="invalid-input-container">
-        {start >= end ? <p className="invalid-input">Start must be before end</p> : <></>}
-        {start === undefined || end === undefined ? <p className="invalid-input">You must provide hours</p> : <></>}
-      </div>
+        {invalidForm ? <p className="invalid-input">You must provide all information.</p>:<></>}
+        {start >= end ? <p className="invalid-input">Start must be before end.</p> : <></>}      </div>
       <div className="buttonContainer">
         <button onClick={() => { props['handleClose'](); } }>Cancel</button>
         <button className="save-event-button" onClick={() => {
-          postEvent(props['setEventCreated'], props['setEventData'], props, props['roomId']);
+          postEvent(props['setEventCreated'], props['setEventData'], form);
         } 
         }
-        disabled={start >= end}>Add event</button>
+        disabled={start >= end || invalidForm}>Add event</button>
       </div>
     </div>
   </>;
