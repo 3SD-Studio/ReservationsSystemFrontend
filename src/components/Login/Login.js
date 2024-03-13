@@ -1,49 +1,16 @@
 import React from "react";
 
 import "./Login.css";
+import { logUser } from "../../functions/ApiUtils";
 
+/**
+ * Renders the login component.
+ * 
+ * @returns {JSX.Element} The login component.
+ */
 export function Login() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-
-  const logUser = () => {
-    if (email === "" || password === "") {
-      alert("Please fill all fields");
-      return;
-    }
-
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    var raw = JSON.stringify({
-      "email": email,
-      "password": password
-    });
-
-    var requestOptions = {
-      method: 'POST',
-      headers: myHeaders,
-      body: raw,
-      redirect: 'follow'
-    };
-
-    fetch("http://127.0.0.1:5000/login", requestOptions)
-      .then(response => {
-        if (response.status === 200) {
-          response.text()
-          .then((text) => {
-            let token = JSON.parse(text);
-            localStorage.setItem('token', token['token']);
-          })
-          window.location.href = '/rooms';
-        }
-        else {
-          alert("Wrong email or password");
-        }
-      })
-      .catch(error => console.log('error', error));
-
-  }
 
   return (
     <div className="formBox">
@@ -60,7 +27,13 @@ export function Login() {
             setPassword(text.target.value)
           }} />
       </form>
-      <button onClick={() => { logUser() }}>Login</button>
+      <button onClick={() => {
+        if (email === "" || password === "") {
+          alert("Please fill all fields");
+          return;
+        }
+        logUser(email, password)
+      }}>Login</button>
     </div>
   )
 }

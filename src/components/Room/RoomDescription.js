@@ -17,8 +17,8 @@ export function RoomDescription(props) {
     } 
 
     return (
-        <div className="descritpionDiv">
-            <h3 className="descriptionHeader">Description</h3>
+        <div className="description-div">
+            <h3 className="description-header">Description</h3>
             <hr></hr>
             <p>{room['description']}</p>
             <hr></hr>

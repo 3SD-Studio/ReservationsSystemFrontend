@@ -1,4 +1,4 @@
-const URL = "http://127.0.0.1:5000/";
+const URL = "http://127.0.0.1:5000";
 
 /**
  * Represents a RequestObject used for making API requests.
@@ -311,6 +311,31 @@ export function logout(token) {
   const requestObject = new Request('/logout')
   requestObject.addAuth(token)
   requestObject.setHandler = (response) => { console.log(response) }
+
+  fetchFromApi(requestObject)
+}
+
+/**
+ * Logs in the user by sending a POST request to the login endpoint with the provided email and password.
+ * If the login is successful, it stores the received token in the local storage and redirects the user to the rooms page.
+ * If the login fails, it displays an alert with an error message.
+ *
+ * @param {string} email - The user's email.
+ * @param {string} password - The user's password.
+ */
+export function logUser(email, password) {
+  var raw = JSON.stringify({
+    "email": email,
+    "password": password
+  });
+
+  const requestObject = new Request("/login", "POST", raw, (response) => {
+    if (response.token) {
+      localStorage.setItem('token', response.token);
+      window.location.href = '/rooms';
+    }
+  }, (error) => { alert("Wrong username or password!") })
+
 
   fetchFromApi(requestObject)
 }

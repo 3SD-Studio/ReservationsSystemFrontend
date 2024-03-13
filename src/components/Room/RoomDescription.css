@@ -1,4 +1,4 @@
-.descritpionDiv p {
+.description-div p {
     margin-top: 0px;
     margin-bottom: 0px;
     margin-left: 10px;
@@ -6,12 +6,12 @@
     
 }
 
-.descritpionDiv h4 {
+.description-div h4 {
     margin-bottom: 5px;
     margin-top: 5px;
 }
 
-.descritpionDiv {
+.description-div {
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
     margin-left: 2%;
     margin-right: 5%;
@@ -32,7 +32,7 @@
     color: red;
 }
 
-.descriptionHeader {
+.description-header {
     text-align: center;
 }
 
